@@ -43,6 +43,10 @@ class PeriodoAcademicoController extends Controller
             'activo' => 'boolean',
         ]);
 
+        // Generar nombre automáticamente
+        $semestreNombre = $validated['semestre'] == 1 ? 'Primer' : 'Segundo';
+        $validated['nombre'] = "{$semestreNombre} Semestre {$validated['anio']}";
+
         PeriodoAcademico::create($validated);
 
         return redirect()->route('periodos-academicos.index')
@@ -83,6 +87,10 @@ class PeriodoAcademicoController extends Controller
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'activo' => 'boolean',
         ]);
+
+        // Generar nombre automáticamente
+        $semestreNombre = $validated['semestre'] == 1 ? 'Primer' : 'Segundo';
+        $validated['nombre'] = "{$semestreNombre} Semestre {$validated['anio']}";
 
         $periodo->update($validated);
 
