@@ -14,7 +14,7 @@ import { type BreadcrumbItem, type User, type Modulo, type Seccion, type Turno, 
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft, Info } from 'lucide-react';
 import { useMemo } from 'react';
-import { route } from 'ziggy-js';
+import { store } from '@/routes/asignaciones';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -58,7 +58,7 @@ export default function AsignacionesCreate({ docentes, modulos, secciones, turno
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('asignaciones.store'));
+        post(store.url());
     };
 
     return (

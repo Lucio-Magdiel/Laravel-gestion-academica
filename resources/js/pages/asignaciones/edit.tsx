@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { useMemo } from 'react';
-import { route } from 'ziggy-js';
+import { update } from '@/routes/asignaciones';
 
 interface Semestre {
   id: number;
@@ -84,7 +84,7 @@ export default function EditAsignacion({
   turnos,
   periodos,
 }: Props) {
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, patch, processing, errors } = useForm({
     docente_id: asignacion.docente_id.toString(),
     semestre_id: asignacion.modulo.semestre_id.toString(),
     modulo_id: asignacion.modulo_id.toString(),
@@ -102,7 +102,7 @@ export default function EditAsignacion({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    put(route('asignaciones.update', asignacion.id));
+    patch(update.url(asignacion.id));
   };
 
   return (
