@@ -50,10 +50,7 @@ export default function EditModulo({ modulo, semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const url = modulos.update(modulo.id).url;
-    console.log('Datos a enviar:', data);
-    console.log('URL:', url);
-    patch(url);
+    patch(modulos.update(modulo.id).url());
   };
 
   return (
