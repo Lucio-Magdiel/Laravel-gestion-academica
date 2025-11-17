@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import modulos from '@/routes/modulos';
+import modulos, { store } from '@/routes/modulos';
 
 interface Semestre {
   id: number;
@@ -39,7 +39,7 @@ export default function CreateModulo({ semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(modulos.store.url());
+    post(store.url());
   };
 
   return (
