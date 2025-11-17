@@ -41,13 +41,18 @@ class ModuloController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'semestre_id' => 'required|exists:semestres,id',
+            'semestre_id' => 'required|integer|exists:semestres,id',
             'codigo' => 'required|string|max:20|unique:modulos,codigo',
             'nombre' => 'required|string|max:255',
             'creditos' => 'required|integer|min:1|max:10',
             'horas_semanales' => 'required|integer|min:1|max:20',
             'activo' => 'boolean',
         ]);
+
+        // Asegurar que los valores sean convertidos a integers
+        $validated['semestre_id'] = (int) $validated['semestre_id'];
+        $validated['creditos'] = (int) $validated['creditos'];
+        $validated['horas_semanales'] = (int) $validated['horas_semanales'];
 
         Modulo::create($validated);
 
@@ -85,13 +90,18 @@ class ModuloController extends Controller
         $modulo = Modulo::findOrFail($id);
 
         $validated = $request->validate([
-            'semestre_id' => 'required|exists:semestres,id',
+            'semestre_id' => 'required|integer|exists:semestres,id',
             'codigo' => 'required|string|max:20|unique:modulos,codigo,' . $id,
             'nombre' => 'required|string|max:255',
             'creditos' => 'required|integer|min:1|max:10',
             'horas_semanales' => 'required|integer|min:1|max:20',
             'activo' => 'boolean',
         ]);
+
+        // Asegurar que los valores sean convertidos a integers
+        $validated['semestre_id'] = (int) $validated['semestre_id'];
+        $validated['creditos'] = (int) $validated['creditos'];
+        $validated['horas_semanales'] = (int) $validated['horas_semanales'];
 
         $modulo->update($validated);
 
