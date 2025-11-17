@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { route } from 'ziggy-js';
+import { update } from '@/routes/periodos-academicos';
 
 interface PeriodoAcademico {
   id: number;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function EditPeriodoAcademico({ periodo }: Props) {
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, patch, processing, errors } = useForm({
     anio: periodo.anio.toString(),
     semestre: periodo.semestre.toString(),
     fecha_inicio: periodo.fecha_inicio,
@@ -33,7 +33,7 @@ export default function EditPeriodoAcademico({ periodo }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    put(route('periodos-academicos.update', periodo.id));
+    patch(update.url(periodo.id));
   };
 
   return (

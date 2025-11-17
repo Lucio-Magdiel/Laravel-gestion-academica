@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { route } from 'ziggy-js';
+import { store } from '@/routes/periodos-academicos';
 
 export default function CreatePeriodoAcademico() {
   const { data, setData, post, processing, errors } = useForm({
@@ -20,7 +20,7 @@ export default function CreatePeriodoAcademico() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('periodos-academicos.store'));
+    post(store.url());
   };
 
   return (
