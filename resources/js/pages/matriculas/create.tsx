@@ -14,6 +14,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type PeriodoAcademico, type Semestre, type Seccion, type Turno } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft, Calendar, Clock, GraduationCap, Users } from 'lucide-react';
+import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,7 +47,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/mi-matricula');
+        post(route('matriculas.store'));
     };
 
     return (

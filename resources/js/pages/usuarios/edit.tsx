@@ -14,6 +14,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type User } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
+import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -49,7 +50,7 @@ export default function UsuariosEdit({ usuario }: UsuariosEditProps) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/usuarios/${usuario.id}`);
+        put(route('usuarios.update', usuario.id));
     };
 
     return (

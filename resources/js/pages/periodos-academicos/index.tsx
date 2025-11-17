@@ -31,7 +31,7 @@ interface PeriodosIndexProps {
 
 const estadoColors = {
     activo: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    borrador: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
+    inactivo: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
     cerrado: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
 };
 
@@ -106,8 +106,8 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                                                 {new Date(periodo.fecha_fin).toLocaleDateString('es-PE')}
                                             </TableCell>
                                             <TableCell>
-                                                <Badge className={estadoColors[periodo.estado as keyof typeof estadoColors] || estadoColors.borrador}>
-                                                    {periodo.estado.charAt(0).toUpperCase() + periodo.estado.slice(1)}
+                                                <Badge className={estadoColors[periodo.estado as keyof typeof estadoColors] || estadoColors.inactivo}>
+                                                    {periodo.activo ? 'Activo' : 'Inactivo'}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="text-right">

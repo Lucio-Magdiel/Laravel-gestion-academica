@@ -92,7 +92,7 @@ export default function UsuariosIndex({ usuarios }: UsuariosIndexProps) {
                                 ) : (
                                     usuarios.map((usuario) => (
                                         <TableRow key={usuario.id}>
-                                            <TableCell className="font-medium">{usuario.name}</TableCell>
+                                            <TableCell className="font-medium">{usuario.nombre_completo || usuario.name}</TableCell>
                                             <TableCell>{usuario.email}</TableCell>
                                             <TableCell>{usuario.dni}</TableCell>
                                             <TableCell>

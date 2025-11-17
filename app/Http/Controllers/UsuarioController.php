@@ -95,7 +95,8 @@ class UsuarioController extends Controller
     public function destroy(Usuario $usuario)
     {
         // No permitir eliminar al usuario autenticado
-        if ($usuario->id === auth()->id()) {
+        $currentUser = auth()->user();
+        if ($currentUser && $usuario->id === $currentUser->id) {
             return back()->with('error', 'No puedes eliminar tu propio usuario');
         }
 

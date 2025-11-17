@@ -16,6 +16,10 @@ class DashboardController extends Controller
         /** @var \App\Models\Usuario $user */
         $user = auth()->user();
 
+        if (!$user) {
+            abort(401);
+        }
+
         return match($user->rol) {
             'super_admin', 'administracion' => $this->adminDashboard(),
             'docente' => $this->docenteDashboard(),

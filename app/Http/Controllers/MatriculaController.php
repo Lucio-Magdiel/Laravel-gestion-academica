@@ -36,7 +36,7 @@ class MatriculaController extends Controller
     public function create()
     {
         // Verificar que haya un período académico activo
-        $periodoActivo = PeriodoAcademico::where('estado', 'activo')->first();
+        $periodoActivo = PeriodoAcademico::where('activo', true)->first();
 
         $periodos = PeriodoAcademico::orderBy('anio', 'desc')->get();
         $semestres = Semestre::where('activo', true)->get();
@@ -64,7 +64,12 @@ class MatriculaController extends Controller
             'periodo_academico_id' => 'required|exists:periodos_academicos,id',
         ]);
 
+        /** @var \App\Models\Usuario $estudiante */
         $estudiante = auth()->user();
+
+        if (!$estudiante) {
+            abort(401);
+        }
 
         // Verificar que no esté ya matriculado en este período
         $matriculaExistente = Matricula::where('estudiante_id', $estudiante->id)
