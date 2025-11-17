@@ -32,12 +32,19 @@ interface Props {
 }
 
 export default function EditModulo({ modulo, semestres }: Props) {
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, put, processing, errors } = useForm<{
+    semestre_id: string;
+    codigo: string;
+    nombre: string;
+    creditos: string | number;
+    horas_semanales: string | number;
+    activo: boolean;
+  }>({
     semestre_id: modulo.semestre_id.toString(),
     codigo: modulo.codigo,
     nombre: modulo.nombre,
-    creditos: modulo.creditos.toString(),
-    horas_semanales: modulo.horas_semanales.toString(),
+    creditos: modulo.creditos,
+    horas_semanales: modulo.horas_semanales,
     activo: modulo.activo,
   });
 
@@ -147,7 +154,7 @@ export default function EditModulo({ modulo, semestres }: Props) {
                     min="1"
                     max="10"
                     value={data.creditos}
-                    onChange={(e) => setData('creditos', e.target.value)}
+                    onChange={(e) => setData('creditos', e.target.value ? parseInt(e.target.value, 10) : 0)}
                     placeholder="Ej: 4"
                   />
                   {errors.creditos && (
@@ -166,7 +173,7 @@ export default function EditModulo({ modulo, semestres }: Props) {
                     min="1"
                     max="20"
                     value={data.horas_semanales}
-                    onChange={(e) => setData('horas_semanales', e.target.value)}
+                    onChange={(e) => setData('horas_semanales', e.target.value ? parseInt(e.target.value, 10) : 0)}
                     placeholder="Ej: 6"
                   />
                   {errors.horas_semanales && (

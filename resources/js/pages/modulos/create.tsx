@@ -21,12 +21,19 @@ interface Props {
 }
 
 export default function CreateModulo({ semestres }: Props) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm<{
+    semestre_id: string;
+    codigo: string;
+    nombre: string;
+    creditos: string | number;
+    horas_semanales: string | number;
+    activo: boolean;
+  }>({
     semestre_id: '',
     codigo: '',
     nombre: '',
-    creditos: '',
-    horas_semanales: '',
+    creditos: 0,
+    horas_semanales: 0,
     activo: true,
   });
 
@@ -136,7 +143,7 @@ export default function CreateModulo({ semestres }: Props) {
                     min="1"
                     max="10"
                     value={data.creditos}
-                    onChange={(e) => setData('creditos', e.target.value)}
+                    onChange={(e) => setData('creditos', e.target.value ? parseInt(e.target.value, 10) : 0)}
                     placeholder="Ej: 4"
                   />
                   {errors.creditos && (
@@ -155,7 +162,7 @@ export default function CreateModulo({ semestres }: Props) {
                     min="1"
                     max="20"
                     value={data.horas_semanales}
-                    onChange={(e) => setData('horas_semanales', e.target.value)}
+                    onChange={(e) => setData('horas_semanales', e.target.value ? parseInt(e.target.value, 10) : 0)}
                     placeholder="Ej: 6"
                   />
                   {errors.horas_semanales && (
