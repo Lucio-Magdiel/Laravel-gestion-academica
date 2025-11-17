@@ -14,7 +14,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { route } from 'ziggy-js';
+import { store } from '@/routes/usuarios';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,7 +46,7 @@ export default function UsuariosCreate() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('usuarios.store'));
+        post(store.url());
     };
 
     return (
