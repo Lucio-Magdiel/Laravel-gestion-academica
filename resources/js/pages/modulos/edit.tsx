@@ -32,7 +32,7 @@ interface Props {
 }
 
 export default function EditModulo({ modulo, semestres }: Props) {
-  const { data, setData, put, processing, errors } = useForm<{
+  const { data, setData, patch, processing, errors } = useForm<{
     semestre_id: string;
     codigo: string;
     nombre: string;
@@ -50,9 +50,7 @@ export default function EditModulo({ modulo, semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    put(modulos.update(modulo.id).url(), {
-      method: 'patch',
-    });
+    patch(modulos.update(modulo.id).url());
   };
 
   return (
