@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { route } from 'ziggy-js';
+import modulos from '@/routes/modulos';
 
 interface Semestre {
   id: number;
@@ -50,7 +50,9 @@ export default function EditModulo({ modulo, semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    put(route('modulos.update', modulo.id));
+    put(modulos.update(modulo.id).url(), {
+      method: 'patch',
+    });
   };
 
   return (

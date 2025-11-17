@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import { route } from 'ziggy-js';
+import modulos from '@/routes/modulos';
 
 interface Semestre {
   id: number;
@@ -39,7 +39,9 @@ export default function CreateModulo({ semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('modulos.store'));
+    post(modulos.store.url(), {
+      method: 'post',
+    });
   };
 
   return (
