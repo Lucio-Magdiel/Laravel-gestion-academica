@@ -39,7 +39,10 @@ export default function CreateModulo({ semestres }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(modulos.store.url());
+    const url = modulos.store.url;
+    console.log('Datos a enviar:', data);
+    console.log('URL:', url);
+    post(url);
   };
 
   return (
