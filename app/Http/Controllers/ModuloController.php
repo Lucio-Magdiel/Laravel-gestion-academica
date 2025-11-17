@@ -16,6 +16,7 @@ class ModuloController extends Controller
     {
         $modulos = Modulo::with('semestre')
             ->orderBy('semestre_id')
+            ->orderBy('codigo')
             ->get();
 
         return Inertia::render('modulos/index', [
