@@ -47,7 +47,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('matriculas.store'));
+        post(route('mi-matricula.store'));
     };
 
     return (

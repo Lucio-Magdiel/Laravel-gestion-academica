@@ -19,7 +19,7 @@ class UsuarioController extends Controller
             $query->where('rol', $rol);
         }
         
-        // Ordenar por rol (super_admin, administracion, docente, estudiante) y luego por nombre
+        // Ordenar por rol (super_admin, administracion, docente, estudiante) y luego por nombre_completo
         $usuarios = $query
             ->orderByRaw("CASE 
                 WHEN rol = 'super_admin' THEN 1 
@@ -28,7 +28,7 @@ class UsuarioController extends Controller
                 WHEN rol = 'estudiante' THEN 4 
                 ELSE 5 
             END")
-            ->orderBy('name')
+            ->orderBy('nombre_completo')
             ->get();
 
         return Inertia::render('usuarios/index', [
@@ -44,7 +44,9 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'apellido_paterno' => 'nullable|string|max:255',
+            'apellido_materno' => 'nullable|string|max:255',
             'dni' => 'required|string|max:15|unique:usuarios',
             'telefono' => 'nullable|string|max:20',
             'direccion' => 'nullable|string',
@@ -80,7 +82,9 @@ class UsuarioController extends Controller
     public function update(Request $request, Usuario $usuario)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
+            'apellido_paterno' => 'nullable|string|max:255',
+            'apellido_materno' => 'nullable|string|max:255',
             'dni' => 'required|string|max:15|unique:usuarios,dni,' . $usuario->id,
             'telefono' => 'nullable|string|max:20',
             'direccion' => 'nullable|string',

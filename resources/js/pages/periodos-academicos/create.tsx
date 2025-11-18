@@ -15,7 +15,7 @@ export default function CreatePeriodoAcademico() {
     semestre: '1',
     fecha_inicio: '',
     fecha_fin: '',
-    activo: true,
+    estado: 'borrador',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -129,14 +129,25 @@ export default function CreatePeriodoAcademico() {
 
                 {/* Estado Activo */}
                 <div className="space-y-2 md:col-span-2">
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="activo"
-                      checked={data.activo}
-                      onCheckedChange={(checked) => setData('activo', checked)}
-                    />
-                    <Label htmlFor="activo">Período activo</Label>
-                  </div>
+                  <Label htmlFor="estado">
+                    Estado <span className="text-destructive">*</span>
+                  </Label>
+                  <Select
+                    value={data.estado}
+                    onValueChange={(value) => setData('estado', value)}
+                  >
+                    <SelectTrigger id="estado">
+                      <SelectValue placeholder="Selecciona el estado" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="borrador">Borrador</SelectItem>
+                      <SelectItem value="activo">Activo</SelectItem>
+                      <SelectItem value="finalizado">Finalizado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {errors.estado && (
+                    <p className="text-sm text-destructive">{errors.estado}</p>
+                  )}
                   <p className="text-sm text-muted-foreground">
                     Solo los períodos activos estarán disponibles para matrículas y asignaciones
                   </p>

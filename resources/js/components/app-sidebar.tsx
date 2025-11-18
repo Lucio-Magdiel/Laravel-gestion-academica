@@ -11,6 +11,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import miMatricula from '@/routes/mi-matricula';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Calendar, FileText, LayoutGrid, Users, BookOpenCheck, UserCog, Folder } from 'lucide-react';
@@ -63,7 +64,7 @@ export function AppSidebar() {
         },
         {
             title: 'Mi Matrícula',
-            href: '/mi-matricula/crear',
+            href: miMatricula.create.url(),
             icon: FileText,
         },
     ];

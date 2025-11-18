@@ -25,7 +25,7 @@ class MatriculaController extends Controller
             ->latest()
             ->paginate(20);
 
-        return Inertia::render('Matriculas/Index', [
+        return Inertia::render('matriculas/index', [
             'matriculas' => $matriculas,
         ]);
     }
@@ -36,7 +36,7 @@ class MatriculaController extends Controller
     public function create()
     {
         // Verificar que haya un período académico activo
-        $periodoActivo = PeriodoAcademico::where('activo', true)->first();
+        $periodoActivo = PeriodoAcademico::where('estado', 'activo')->first();
 
         $periodos = PeriodoAcademico::orderBy('anio', 'desc')->get();
         $semestres = Semestre::where('activo', true)->get();
@@ -144,8 +144,13 @@ class MatriculaController extends Controller
             'detalles.asignacionDocente.docente',
         ]);
 
-        return Inertia::render('Matriculas/Show', [
+        // Verificar si el usuario actual puede confirmar el pago
+        $canConfirmPago = auth()->user()->id === $matricula->estudiante_id && 
+                         $matricula->estado === 'registrado';
+
+        return Inertia::render('matriculas/show', [
             'matricula' => $matricula,
+            'canConfirmPago' => $canConfirmPago,
         ]);
     }
 

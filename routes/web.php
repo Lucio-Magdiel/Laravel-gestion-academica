@@ -45,6 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('mi-matricula/crear', [MatriculaController::class, 'create'])->name('mi-matricula.create');
         Route::post('mi-matricula', [MatriculaController::class, 'store'])->name('mi-matricula.store');
         Route::get('mi-matricula/{matricula}', [MatriculaController::class, 'show'])->name('mi-matricula.show');
+        Route::post('mi-matricula/{matricula}/confirmar-pago', [MatriculaController::class, 'confirmarPago'])
+            ->name('mi-matricula.confirmar-pago');
         Route::get('mi-matricula/{matricula}/constancia', [MatriculaController::class, 'descargarConstancia'])
             ->name('mi-matricula.constancia');
         Route::delete('mi-matricula/{matricula}', [MatriculaController::class, 'destroy'])

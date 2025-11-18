@@ -32,7 +32,10 @@ export interface SharedData {
 
 export interface User {
     id: number;
-    name: string;
+    name?: string;
+    nombre?: string;
+    apellido_paterno?: string;
+    apellido_materno?: string;
     nombre_completo?: string;
     email: string;
     avatar?: string;
@@ -113,12 +116,15 @@ export interface Matricula {
     codigo: string;
     estudiante_id: number;
     periodo_academico_id: number;
-    semestre_id: number;
+    semestre_id?: number;
     seccion_id: number;
     turno_id: number;
-    estado: 'pendiente' | 'confirmado' | 'anulado';
-    fecha_matricula: string;
-    fecha_pago?: string;
+    estado: 'registrado' | 'confirmado' | 'anulado';
+    fecha_registro: string;
+    fecha_confirmacion?: string;
+    observaciones?: string;
+    created_at?: string;
+    updated_at?: string;
     estudiante?: User;
     periodoAcademico?: PeriodoAcademico;
     semestre?: Semestre;

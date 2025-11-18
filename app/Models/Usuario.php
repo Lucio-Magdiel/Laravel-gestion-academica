@@ -24,6 +24,9 @@ class Usuario extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nombre',
+        'apellido_paterno',
+        'apellido_materno',
         'nombre_completo',
         'email',
         'dni',
@@ -70,10 +73,20 @@ class Usuario extends Authenticatable
 
     /**
      * Accessor para el atributo 'name'.
-     * Retorna nombre_completo.
+     * Genera nombre completo a partir de nombre, apellido_paterno y apellido_materno.
      */
     public function getNameAttribute(): string
     {
+        $partes = array_filter([
+            $this->nombre,
+            $this->apellido_paterno,
+            $this->apellido_materno,
+        ]);
+        
+        if (!empty($partes)) {
+            return implode(' ', $partes);
+        }
+        
         return $this->nombre_completo ?? '';
     }
 

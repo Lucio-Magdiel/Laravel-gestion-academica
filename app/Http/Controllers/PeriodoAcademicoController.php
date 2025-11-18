@@ -40,7 +40,7 @@ class PeriodoAcademicoController extends Controller
             'semestre' => 'required|in:1,2',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after:fecha_inicio',
-            'activo' => 'boolean',
+            'estado' => 'required|in:borrador,activo,finalizado',
         ]);
 
         // Generar nombre automáticamente
@@ -85,7 +85,7 @@ class PeriodoAcademicoController extends Controller
             'semestre' => 'required|in:1,2',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after:fecha_inicio',
-            'activo' => 'boolean',
+            'estado' => 'required|in:borrador,activo,finalizado',
         ]);
 
         // Generar nombre automáticamente

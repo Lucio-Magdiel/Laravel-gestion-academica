@@ -33,7 +33,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function UsuariosCreate() {
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
+        nombre: '',
+        apellido_paterno: '',
+        apellido_materno: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -76,16 +78,42 @@ export default function UsuariosCreate() {
                         <CardContent className="space-y-6">
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">Nombre Completo *</Label>
+                                    <Label htmlFor="nombre">Nombre *</Label>
                                     <Input
-                                        id="name"
-                                        value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
-                                        placeholder="Ej: Juan Pérez García"
+                                        id="nombre"
+                                        value={data.nombre}
+                                        onChange={(e) => setData('nombre', e.target.value)}
+                                        placeholder="Ej: Juan"
                                         required
                                     />
-                                    {errors.name && (
-                                        <p className="text-sm text-red-600">{errors.name}</p>
+                                    {errors.nombre && (
+                                        <p className="text-sm text-red-600">{errors.nombre}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="apellido_paterno">Apellido Paterno</Label>
+                                    <Input
+                                        id="apellido_paterno"
+                                        value={data.apellido_paterno}
+                                        onChange={(e) => setData('apellido_paterno', e.target.value)}
+                                        placeholder="Ej: Pérez"
+                                    />
+                                    {errors.apellido_paterno && (
+                                        <p className="text-sm text-red-600">{errors.apellido_paterno}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="apellido_materno">Apellido Materno</Label>
+                                    <Input
+                                        id="apellido_materno"
+                                        value={data.apellido_materno}
+                                        onChange={(e) => setData('apellido_materno', e.target.value)}
+                                        placeholder="Ej: García"
+                                    />
+                                    {errors.apellido_materno && (
+                                        <p className="text-sm text-red-600">{errors.apellido_materno}</p>
                                     )}
                                 </div>
 
@@ -111,7 +139,7 @@ export default function UsuariosCreate() {
                                         value={data.dni}
                                         onChange={(e) => setData('dni', e.target.value)}
                                         placeholder="12345678"
-                                        maxLength={8}
+                                        maxLength={15}
                                         required
                                     />
                                     {errors.dni && (
