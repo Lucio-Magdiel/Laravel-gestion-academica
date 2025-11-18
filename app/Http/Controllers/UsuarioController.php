@@ -19,7 +19,17 @@ class UsuarioController extends Controller
             $query->where('rol', $rol);
         }
         
-        $usuarios = $query->latest()->get();
+        // Ordenar por rol (super_admin, administracion, docente, estudiante) y luego por nombre
+        $usuarios = $query
+            ->orderByRaw("CASE 
+                WHEN rol = 'super_admin' THEN 1 
+                WHEN rol = 'administracion' THEN 2 
+                WHEN rol = 'docente' THEN 3 
+                WHEN rol = 'estudiante' THEN 4 
+                ELSE 5 
+            END")
+            ->orderBy('name')
+            ->get();
 
         return Inertia::render('usuarios/index', [
             'usuarios' => $usuarios,
