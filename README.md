@@ -108,11 +108,13 @@ semestres
 ## ⚙️ Configuración Técnica
 
 ### Stack Tecnológico
-- **Backend:** Laravel 11
-- **Frontend:** React + Inertia.js
-- **Base de Datos:** PostgreSQL (Neon.tech)
+- **Backend:** Laravel 12.38.1
+- **Frontend:** React 19.2.0 + TypeScript 5.7.2
+- **Base de Datos:** PostgreSQL 17.5 (Neon.tech)
 - **Autenticación:** Laravel Fortify (2FA incluido)
-- **Build:** Vite
+- **Routing:** Wayfinder (type-safe routing)
+- **UI:** Radix UI + Tailwind CSS
+- **Build:** Vite 7.1.5
 
 ### Requisitos
 - PHP 8.2+
@@ -387,16 +389,51 @@ php artisan serve                # Servidor Laravel
 
 ## 📚 Próximos Pasos (MVP - Producto Mínimo Viable)
 
-### Fase 1: Core del Sistema (Esencial)
-- [ ] Seeders con plan de estudios completo
-- [ ] CRUD de usuarios por rol
-- [ ] Gestión de períodos académicos (abrir/cerrar matrículas)
-- [ ] Asignación de docentes a módulos
-- [ ] Flujo de matrícula de estudiantes
-- [ ] Sistema de pagos básico
-- [ ] Generación de constancia de matrícula (PDF)
+### ✅ Fase 1: Core del Sistema (COMPLETADO)
+- ✅ Seeders con plan de estudios completo
+- ✅ CRUD de usuarios por rol
+- ✅ Gestión de períodos académicos (abrir/cerrar matrículas)
+- ✅ Asignación de docentes a módulos
+- ✅ **Flujo completo de matrícula de estudiantes**
+  - ✅ Selección de semestre, sección y turno
+  - ✅ Vista previa de módulos con docentes asignados
+  - ✅ **Confirmación de pago funcional**
+  - ✅ Redirección automática al dashboard después del pago
+  - ✅ Estados: Registrado → Confirmado
+- ✅ **Sistema de notificaciones flash** (success, error, message)
+- ✅ **Generación de constancia de matrícula**
+  - ✅ Preview en pantalla antes de descargar
+  - ✅ Descarga/impresión en PDF con diseño profesional
+  - ✅ Incluye todos los módulos, créditos, horas y docentes
 
-### Fase 2: Administración
+### ✅ Dashboards Personalizados (COMPLETADO)
+- ✅ **Dashboard Administrador:** Estadísticas del sistema
+- ✅ **Dashboard Docente:** Ver asignaciones
+- ✅ **Dashboard Estudiante:** 
+  - ✅ Información completa de matrícula
+  - ✅ Visualización de todos los módulos con detalles
+  - ✅ Estado de matrícula (Pendiente/Activa)
+  - ✅ Botones: Ver Detalles, Ver Constancia
+  - ✅ Alerta si tiene pago pendiente
+
+### 🔧 Comandos Artisan Personalizados (NUEVOS)
+```bash
+# Actualizar detalles de matrícula con asignaciones docentes
+php artisan matricula:actualizar-detalles {id}
+
+# Verificar datos completos de una matrícula
+php artisan matricula:verificar {id}
+```
+
+### 🎨 Mejoras UI/UX Implementadas
+- ✅ Breadcrumbs dinámicos según rol (estudiante/admin)
+- ✅ Badges de estado con colores (Pendiente de Pago/Activa/Anulado)
+- ✅ Cards con información detallada de módulos
+- ✅ Preview de constancia con diseño profesional
+- ✅ Mensajes flash con auto-hide después de 5 segundos
+- ✅ Botones contextuales según estado de matrícula
+
+### Fase 2: Administración (En Progreso)
 - [ ] Dashboard por rol con métricas
 - [ ] Reportes Excel/PDF (listados, estadísticas)
 - [ ] Bitácora de acciones
