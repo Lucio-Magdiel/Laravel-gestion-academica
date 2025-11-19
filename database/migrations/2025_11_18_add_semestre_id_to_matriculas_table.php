@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('usuarios', function (Blueprint $table) {
-            //
+        Schema::table('matriculas', function (Blueprint $table) {
+            $table->foreignId('semestre_id')->nullable()->after('periodo_academico_id')->constrained('semestres')->nullOnDelete();
         });
     }
 
@@ -21,8 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('usuarios', function (Blueprint $table) {
-            //
+        Schema::table('matriculas', function (Blueprint $table) {
+            $table->dropForeign(['semestre_id']);
+            $table->dropColumn('semestre_id');
         });
     }
 };

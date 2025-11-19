@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type Matricula } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { BookOpen, Clock, Users, Calendar, Download, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { BookOpen, Clock, Users, Calendar, Download, CheckCircle, XCircle, AlertCircle, FileText } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -67,23 +67,42 @@ export default function EstudianteDashboard({ matricula }: EstudianteDashboardPr
                                             Código: {matricula.codigo}
                                         </CardDescription>
                                     </div>
-                                    <Badge className={estadoColors[matricula.estado]}>
-                                        {matricula.estado.charAt(0).toUpperCase() + matricula.estado.slice(1)}
+                                    <Badge className={estadoColors[matricula.estado === 'registrado' ? 'pendiente' : matricula.estado]}>
+                                        {matricula.estado === 'registrado' ? 'Pendiente de Pago' : 
+                                         matricula.estado === 'confirmado' ? 'Activa' : 'Anulado'}
                                     </Badge>
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-4">
+                                {matricula.estado === 'registrado' && (
+                                    <div className="mb-4 rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
+                                        <div className="flex items-center gap-2">
+                                            <AlertCircle className="h-5 w-5 text-yellow-600" />
+                                            <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                                                Matrícula pendiente de pago
+                                            </p>
+                                        </div>
+                                        <p className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+                                            Completa el pago para activar tu matrícula
+                                        </p>
+                                        <Link href={`/mi-matricula/${matricula.id}`}>
+                                            <Button className="mt-3" size="sm">
+                                                Ver Detalles y Confirmar Pago
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                )}
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <div className="space-y-1">
                                         <p className="text-sm font-medium">Período Académico</p>
                                         <p className="text-sm text-muted-foreground">
-                                            {matricula.periodoAcademico?.nombre}
+                                            {matricula.periodoAcademico?.nombre || 'No disponible'}
                                         </p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm font-medium">Semestre</p>
                                         <p className="text-sm text-muted-foreground">
-                                            {matricula.semestre?.nombre}
+                                            {matricula.semestre?.nombre || 'No disponible'}
                                         </p>
                                     </div>
                                     <div className="space-y-1">
@@ -99,29 +118,36 @@ export default function EstudianteDashboard({ matricula }: EstudianteDashboardPr
                                         </p>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-sm font-medium">Fecha de Matrícula</p>
+                                        <p className="text-sm font-medium">Fecha de Registro</p>
                                         <p className="text-sm text-muted-foreground">
-                                            {new Date(matricula.fecha_matricula).toLocaleDateString('es-PE')}
+                                            {new Date(matricula.fecha_registro).toLocaleDateString('es-PE')}
                                         </p>
                                     </div>
-                                    {matricula.fecha_pago && (
+                                    {matricula.fecha_confirmacion && (
                                         <div className="space-y-1">
-                                            <p className="text-sm font-medium">Fecha de Pago</p>
+                                            <p className="text-sm font-medium">Fecha de Confirmación</p>
                                             <p className="text-sm text-muted-foreground">
-                                                {new Date(matricula.fecha_pago).toLocaleDateString('es-PE')}
+                                                {new Date(matricula.fecha_confirmacion).toLocaleDateString('es-PE')}
                                             </p>
                                         </div>
                                     )}
                                 </div>
 
-                                {matricula.estado === 'confirmado' && (
-                                    <Link href={`/mi-matricula/${matricula.id}/constancia`}>
-                                        <Button variant="outline" className="w-full gap-2">
-                                            <Download className="h-4 w-4" />
-                                            Descargar Constancia de Matrícula
+                                <div className="flex gap-2">
+                                    <Link href={`/mi-matricula/${matricula.id}`} className="flex-1">
+                                        <Button variant="outline" className="w-full">
+                                            Ver Detalles Completos
                                         </Button>
                                     </Link>
-                                )}
+                                    {matricula.estado === 'confirmado' && (
+                                        <Link href={`/mi-matricula/${matricula.id}/constancia`} className="flex-1">
+                                            <Button variant="outline" className="w-full gap-2">
+                                                <FileText className="h-4 w-4" />
+                                                Ver Constancia
+                                            </Button>
+                                        </Link>
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
 
@@ -141,29 +167,29 @@ export default function EstudianteDashboard({ matricula }: EstudianteDashboardPr
                                         <Card key={detalle.id}>
                                             <CardHeader>
                                                 <CardTitle className="text-lg">
-                                                    {detalle.asignacionDocente?.modulo?.nombre}
+                                                    {detalle.asignacionDocente?.modulo?.nombre || 'Sin nombre'}
                                                 </CardTitle>
                                                 <CardDescription>
-                                                    Código: {detalle.asignacionDocente?.modulo?.codigo}
+                                                    Código: {detalle.asignacionDocente?.modulo?.codigo || 'N/A'}
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardContent className="space-y-2">
                                                 <div className="flex items-center gap-2 text-sm">
                                                     <BookOpen className="h-4 w-4 text-muted-foreground" />
                                                     <span>
-                                                        {detalle.asignacionDocente?.modulo?.creditos} créditos
+                                                        {detalle.asignacionDocente?.modulo?.creditos || 0} créditos
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2 text-sm">
                                                     <Clock className="h-4 w-4 text-muted-foreground" />
                                                     <span>
-                                                        {detalle.asignacionDocente?.modulo?.horas_semanales} horas/semana
+                                                        {detalle.asignacionDocente?.modulo?.horas_semanales || 0} horas/semana
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2 text-sm">
                                                     <Users className="h-4 w-4 text-muted-foreground" />
                                                     <span>
-                                                        Docente: {detalle.asignacionDocente?.docente?.name || 'Por asignar'}
+                                                        Docente: {detalle.asignacionDocente?.docente?.nombre_completo || 'Por asignar'}
                                                     </span>
                                                 </div>
                                             </CardContent>

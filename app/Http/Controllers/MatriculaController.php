@@ -90,6 +90,7 @@ class MatriculaController extends Controller
                 'codigo' => $codigo,
                 'estudiante_id' => $estudiante->id,
                 'periodo_academico_id' => $validated['periodo_academico_id'],
+                'semestre_id' => $validated['semestre_id'],
                 'seccion_id' => $validated['seccion_id'],
                 'turno_id' => $validated['turno_id'],
                 'estado' => 'registrado', // Cambia a 'confirmado' después del pago
@@ -107,21 +108,24 @@ class MatriculaController extends Controller
                     ->where('turno_id', $validated['turno_id'])
                     ->first();
 
-                if ($asignacion && $asignacion->cupos_disponibles > 0) {
+                // Si hay asignación, crear el detalle
+                if ($asignacion) {
                     DetalleMatricula::create([
                         'matricula_id' => $matricula->id,
                         'asignacion_docente_id' => $asignacion->id,
                         'estado' => 'registrado',
                     ]);
 
-                    // Reducir cupos disponibles
-                    $asignacion->decrement('cupos_disponibles');
+                    // Reducir cupos disponibles si los tiene
+                    if ($asignacion->cupos_disponibles > 0) {
+                        $asignacion->decrement('cupos_disponibles');
+                    }
                 }
             }
 
             DB::commit();
 
-            return redirect()->route('matriculas.show', $matricula)
+            return redirect()->route('mi-matricula.show', $matricula)
                 ->with('success', 'Matrícula registrada exitosamente. Proceda con el pago para confirmarla.');
 
         } catch (\Exception $e) {
@@ -138,6 +142,7 @@ class MatriculaController extends Controller
         $matricula->load([
             'estudiante',
             'periodoAcademico',
+            'semestre',
             'seccion',
             'turno',
             'detalles.asignacionDocente.modulo',
@@ -148,8 +153,38 @@ class MatriculaController extends Controller
         $canConfirmPago = auth()->user()->id === $matricula->estudiante_id && 
                          $matricula->estado === 'registrado';
 
+        // Transformar a array para asegurar serialización correcta
+        $matriculaData = $matricula->toArray();
+        
+        // Asegurar que los detalles tengan toda la información
+        if (isset($matriculaData['detalles'])) {
+            foreach ($matriculaData['detalles'] as &$detalle) {
+                if (isset($detalle['asignacion_docente_id'])) {
+                    $asignacion = AsignacionDocente::with(['modulo', 'docente'])
+                        ->find($detalle['asignacion_docente_id']);
+                    
+                    if ($asignacion) {
+                        $detalle['asignacionDocente'] = [
+                            'id' => $asignacion->id,
+                            'modulo' => $asignacion->modulo ? [
+                                'id' => $asignacion->modulo->id,
+                                'codigo' => $asignacion->modulo->codigo,
+                                'nombre' => $asignacion->modulo->nombre,
+                                'creditos' => $asignacion->modulo->creditos,
+                                'horas_semanales' => $asignacion->modulo->horas_semanales,
+                            ] : null,
+                            'docente' => $asignacion->docente ? [
+                                'id' => $asignacion->docente->id,
+                                'nombre_completo' => $asignacion->docente->nombre_completo,
+                            ] : null,
+                        ];
+                    }
+                }
+            }
+        }
+
         return Inertia::render('matriculas/show', [
-            'matricula' => $matricula,
+            'matricula' => $matriculaData,
             'canConfirmPago' => $canConfirmPago,
         ]);
     }
@@ -159,12 +194,73 @@ class MatriculaController extends Controller
      */
     public function confirmarPago(Matricula $matricula)
     {
+        // Verificar que el usuario sea el dueño de la matrícula
+        if (auth()->user()->id !== $matricula->estudiante_id) {
+            abort(403, 'No autorizado');
+        }
+
+        // Verificar que esté en estado registrado
+        if ($matricula->estado !== 'registrado') {
+            return back()->with('error', 'Esta matrícula ya fue procesada.');
+        }
+
         $matricula->update([
             'estado' => 'confirmado',
             'fecha_confirmacion' => now(),
         ]);
 
-        return back()->with('success', 'Pago confirmado. Matrícula activa.');
+        return redirect()->route('dashboard')
+            ->with('success', '¡Pago confirmado! Tu matrícula está activa.');
+    }
+
+    /**
+     * Ver constancia de matrícula
+     */
+    public function verConstancia(Matricula $matricula)
+    {
+        $matricula->load([
+            'estudiante',
+            'periodoAcademico',
+            'semestre',
+            'seccion',
+            'turno',
+            'detalles.asignacionDocente.modulo',
+            'detalles.asignacionDocente.docente',
+        ]);
+
+        // Transformar datos para el frontend
+        $matriculaData = $matricula->toArray();
+        
+        // Asegurar que los detalles tengan toda la información
+        if (isset($matriculaData['detalles'])) {
+            foreach ($matriculaData['detalles'] as &$detalle) {
+                if (isset($detalle['asignacion_docente_id'])) {
+                    $asignacion = AsignacionDocente::with(['modulo', 'docente'])
+                        ->find($detalle['asignacion_docente_id']);
+                    
+                    if ($asignacion) {
+                        $detalle['asignacionDocente'] = [
+                            'id' => $asignacion->id,
+                            'modulo' => $asignacion->modulo ? [
+                                'id' => $asignacion->modulo->id,
+                                'codigo' => $asignacion->modulo->codigo,
+                                'nombre' => $asignacion->modulo->nombre,
+                                'creditos' => $asignacion->modulo->creditos,
+                                'horas_semanales' => $asignacion->modulo->horas_semanales,
+                            ] : null,
+                            'docente' => $asignacion->docente ? [
+                                'id' => $asignacion->docente->id,
+                                'nombre_completo' => $asignacion->docente->nombre_completo,
+                            ] : null,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return Inertia::render('matriculas/constancia', [
+            'matricula' => $matriculaData,
+        ]);
     }
 
     /**
@@ -175,15 +271,14 @@ class MatriculaController extends Controller
         $matricula->load([
             'estudiante',
             'periodoAcademico',
+            'semestre',
             'seccion',
             'turno',
             'detalles.asignacionDocente.modulo',
             'detalles.asignacionDocente.docente',
         ]);
 
-        // TODO: Implementar generación de PDF con DomPDF o similar
-        // Por ahora retornamos vista
-        return view('matriculas.constancia', compact('matricula'));
+        return view('matriculas.constancia-pdf', compact('matricula'));
     }
 
     /**

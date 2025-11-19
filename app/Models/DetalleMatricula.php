@@ -30,4 +30,10 @@ class DetalleMatricula extends Model
     {
         return $this->belongsTo(AsignacionDocente::class, 'asignacion_docente_id');
     }
+
+    // Alias para mantener compatibilidad
+    public function asignacionDocente()
+    {
+        return $this->belongsTo(AsignacionDocente::class, 'asignacion_docente_id');
+    }
 }

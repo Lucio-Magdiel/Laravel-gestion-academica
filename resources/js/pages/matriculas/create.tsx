@@ -14,7 +14,6 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type PeriodoAcademico, type Semestre, type Seccion, type Turno } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft, Calendar, Clock, GraduationCap, Users } from 'lucide-react';
-import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,17 +36,17 @@ interface MatriculaCreateProps {
 
 export default function MatriculaCreate({ periodos, semestres, secciones, turnos, periodo_activo }: MatriculaCreateProps) {
     const { data, setData, post, processing, errors } = useForm({
-        periodo_academico_id: periodo_activo?.id || '',
-        semestre_id: '',
-        seccion_id: '',
-        turno_id: '',
+        periodo_academico_id: periodo_activo?.id || 0,
+        semestre_id: 0,
+        seccion_id: 0,
+        turno_id: 0,
     });
 
-    const semestreSeleccionado = semestres.find(s => s.id === Number(data.semestre_id));
+    const semestreSeleccionado = semestres.find(s => s.id === data.semestre_id);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('mi-matricula.store'));
+        post('/mi-matricula');
     };
 
     return (
@@ -122,8 +121,8 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                             </CardHeader>
                             <CardContent>
                                 <RadioGroup
-                                    value={data.semestre_id.toString()}
-                                    onValueChange={(value) => setData('semestre_id', value)}
+                                    value={data.semestre_id > 0 ? data.semestre_id.toString() : ''}
+                                    onValueChange={(value) => setData('semestre_id', parseInt(value))}
                                     className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
                                 >
                                     {semestres.map((semestre) => (
@@ -133,7 +132,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                             className="cursor-pointer"
                                         >
                                             <Card className={`transition-all hover:border-primary ${
-                                                data.semestre_id === semestre.id.toString() ? 'border-primary ring-2 ring-primary' : ''
+                                                data.semestre_id === semestre.id ? 'border-primary ring-2 ring-primary' : ''
                                             }`}>
                                                 <CardContent className="flex items-start gap-3 p-4">
                                                     <RadioGroupItem
@@ -143,7 +142,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                                     <div className="flex-1">
                                                         <h4 className="font-semibold">{semestre.nombre}</h4>
                                                         <p className="text-sm text-muted-foreground">
-                                                            Ciclo {semestre.ciclo}
+                                                            {semestre.descripcion}
                                                         </p>
                                                         <Badge variant="outline" className="mt-2">
                                                             Semestre {semestre.numero}
@@ -161,7 +160,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                         </Card>
 
                         {/* Turno y Sección */}
-                        {data.semestre_id && (
+                        {data.semestre_id > 0 && (
                             <div className="grid gap-6 md:grid-cols-2">
                                 <Card>
                                     <CardHeader>
@@ -172,8 +171,8 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                     </CardHeader>
                                     <CardContent>
                                         <RadioGroup
-                                            value={data.turno_id.toString()}
-                                            onValueChange={(value) => setData('turno_id', value)}
+                                            value={data.turno_id > 0 ? data.turno_id.toString() : ''}
+                                            onValueChange={(value) => setData('turno_id', parseInt(value))}
                                             className="space-y-3"
                                         >
                                             {turnos.map((turno) => (
@@ -183,7 +182,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                                     className="cursor-pointer"
                                                 >
                                                     <div className={`flex items-start gap-3 rounded-lg border p-4 transition-all hover:border-primary ${
-                                                        data.turno_id === turno.id.toString() ? 'border-primary ring-2 ring-primary bg-primary/5' : ''
+                                                        data.turno_id === turno.id ? 'border-primary ring-2 ring-primary bg-primary/5' : ''
                                                     }`}>
                                                         <RadioGroupItem
                                                             value={turno.id.toString()}
@@ -214,8 +213,8 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                     </CardHeader>
                                     <CardContent>
                                         <RadioGroup
-                                            value={data.seccion_id.toString()}
-                                            onValueChange={(value) => setData('seccion_id', value)}
+                                            value={data.seccion_id > 0 ? data.seccion_id.toString() : ''}
+                                            onValueChange={(value) => setData('seccion_id', parseInt(value))}
                                             className="space-y-3"
                                         >
                                             {secciones.map((seccion) => (
@@ -225,7 +224,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                                     className="cursor-pointer"
                                                 >
                                                     <div className={`flex items-start gap-3 rounded-lg border p-4 transition-all hover:border-primary ${
-                                                        data.seccion_id === seccion.id.toString() ? 'border-primary ring-2 ring-primary bg-primary/5' : ''
+                                                        data.seccion_id === seccion.id ? 'border-primary ring-2 ring-primary bg-primary/5' : ''
                                                     }`}>
                                                         <RadioGroupItem
                                                             value={seccion.id.toString()}
@@ -234,7 +233,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                                         <div>
                                                             <p className="font-semibold">Sección {seccion.nombre}</p>
                                                             <p className="text-sm text-muted-foreground">
-                                                                Capacidad: {seccion.capacidad_maxima} estudiantes
+                                                                {seccion.descripcion || 'Capacidad: estudiantes'}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -250,7 +249,7 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                         )}
 
                         {/* Resumen y confirmación */}
-                        {data.semestre_id && data.turno_id && data.seccion_id && (
+                        {data.semestre_id > 0 && data.turno_id > 0 && data.seccion_id > 0 && (
                             <Card className="border-primary">
                                 <CardHeader>
                                     <CardTitle>Resumen de Matrícula</CardTitle>
@@ -271,13 +270,13 @@ export default function MatriculaCreate({ periodos, semestres, secciones, turnos
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Turno:</span>
                                             <span className="font-semibold">
-                                                {turnos.find(t => t.id === Number(data.turno_id))?.nombre}
+                                                {turnos.find(t => t.id === data.turno_id)?.nombre}
                                             </span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Sección:</span>
                                             <span className="font-semibold">
-                                                Sección {secciones.find(s => s.id === Number(data.seccion_id))?.nombre}
+                                                Sección {secciones.find(s => s.id === data.seccion_id)?.nombre}
                                             </span>
                                         </div>
                                     </div>

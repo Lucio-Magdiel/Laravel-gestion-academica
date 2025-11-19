@@ -15,21 +15,6 @@ import { Head, Link, router } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle, Clock } from 'lucide-react';
 import React from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-    {
-        title: 'Matrículas',
-        href: '/matriculas',
-    },
-    {
-        title: 'Detalle',
-        href: '#',
-    },
-];
-
 interface MatriculasShowProps {
     matricula: Matricula;
     canConfirmPago: boolean;
@@ -66,9 +51,34 @@ const getEstadoBadge = (estado: string) => {
 export default function MatriculasShow({ matricula, canConfirmPago }: MatriculasShowProps) {
     const [isProcessing, setIsProcessing] = React.useState(false);
 
+    // Detectar si estamos en la vista de estudiante o admin
+    const isStudentView = window.location.pathname.includes('/mi-matricula');
+    
+    // Construir breadcrumbs dinámicos
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Dashboard',
+            href: '/dashboard',
+        },
+        {
+            title: isStudentView ? 'Mi Matrícula' : 'Matrículas',
+            href: isStudentView ? '/dashboard' : '/matriculas',
+        },
+        {
+            title: 'Detalle',
+            href: '#',
+        },
+    ];
+
+    const confirmarPagoUrl = isStudentView 
+        ? `/mi-matricula/${matricula.id}/confirmar-pago`
+        : `/matriculas/${matricula.id}/confirmar-pago`;
+        
+    const backUrl = isStudentView ? '/dashboard' : '/matriculas';
+
     const handleConfirmarPago = () => {
         setIsProcessing(true);
-        router.post(`/mi-matricula/${matricula.id}/confirmar-pago`, {}, {
+        router.post(confirmarPagoUrl, {}, {
             onFinish: () => setIsProcessing(false),
         });
     };
@@ -78,7 +88,7 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
             <Head title={`Matrícula ${matricula.codigo}`} />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
-                    <Link href="/matriculas">
+                    <Link href={backUrl}>
                         <Button variant="outline" size="icon">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -109,6 +119,10 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
                                     <div>
                                         <p className="text-sm text-muted-foreground">Período Académico</p>
                                         <p className="mt-1 font-semibold">{matricula.periodoAcademico?.nombre}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Semestre</p>
+                                        <p className="mt-1 font-semibold">{matricula.semestre?.nombre}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-muted-foreground">Sección</p>
@@ -159,13 +173,13 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
                                             {matricula.detalles && matricula.detalles.map((detalle) => (
                                                 <TableRow key={detalle.id}>
                                                     <TableCell className="font-medium">
-                                                        {detalle.asignacionDocente?.modulo?.nombre}
+                                                        {detalle.asignacionDocente?.modulo?.nombre || 'Sin nombre'}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {detalle.asignacionDocente?.modulo?.creditos}
+                                                        {detalle.asignacionDocente?.modulo?.creditos || 0}
                                                     </TableCell>
                                                     <TableCell>
-                                                        {detalle.asignacionDocente?.docente?.nombre_completo}
+                                                        {detalle.asignacionDocente?.docente?.nombre_completo || 'Por asignar'}
                                                     </TableCell>
                                                     <TableCell>
                                                         <Badge variant="outline">

@@ -63,12 +63,55 @@ class DashboardController extends Controller
         $estudiante = auth()->user();
         
         $matricula = Matricula::where('estudiante_id', $estudiante->id)
-            ->with(['detalles.asignacionDocente.modulo', 'detalles.asignacionDocente.docente', 'periodoAcademico', 'seccion', 'turno', 'semestre'])
+            ->with([
+                'detalles.asignacionDocente.modulo', 
+                'detalles.asignacionDocente.docente', 
+                'periodoAcademico', 
+                'seccion', 
+                'turno', 
+                'semestre'
+            ])
             ->latest()
             ->first();
 
+        // Transformar los datos para asegurar que lleguen correctamente
+        if ($matricula) {
+            $matriculaData = $matricula->toArray();
+            
+            // Asegurar que los detalles tengan toda la información
+            if (isset($matriculaData['detalles'])) {
+                foreach ($matriculaData['detalles'] as &$detalle) {
+                    if (isset($detalle['asignacion_docente_id'])) {
+                        $asignacion = AsignacionDocente::with(['modulo', 'docente'])
+                            ->find($detalle['asignacion_docente_id']);
+                        
+                        if ($asignacion) {
+                            $detalle['asignacionDocente'] = [
+                                'id' => $asignacion->id,
+                                'modulo' => $asignacion->modulo ? [
+                                    'id' => $asignacion->modulo->id,
+                                    'codigo' => $asignacion->modulo->codigo,
+                                    'nombre' => $asignacion->modulo->nombre,
+                                    'creditos' => $asignacion->modulo->creditos,
+                                    'horas_semanales' => $asignacion->modulo->horas_semanales,
+                                ] : null,
+                                'docente' => $asignacion->docente ? [
+                                    'id' => $asignacion->docente->id,
+                                    'nombre_completo' => $asignacion->docente->nombre_completo,
+                                ] : null,
+                            ];
+                        }
+                    }
+                }
+            }
+            
+            return Inertia::render('dashboard/estudiante', [
+                'matricula' => $matriculaData,
+            ]);
+        }
+
         return Inertia::render('dashboard/estudiante', [
-            'matricula' => $matricula,
+            'matricula' => null,
         ]);
     }
 }

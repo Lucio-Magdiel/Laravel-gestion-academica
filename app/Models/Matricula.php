@@ -13,6 +13,7 @@ class Matricula extends Model
         'codigo',
         'estudiante_id',
         'periodo_academico_id',
+        'semestre_id',
         'seccion_id',
         'turno_id',
         'estado',
@@ -36,9 +37,19 @@ class Matricula extends Model
         return $this->belongsTo(PeriodoAcademico::class, 'periodo_academico_id');
     }
 
+    public function periodoAcademico()
+    {
+        return $this->belongsTo(PeriodoAcademico::class, 'periodo_academico_id');
+    }
+
     public function seccion()
     {
         return $this->belongsTo(Seccion::class);
+    }
+
+    public function semestre()
+    {
+        return $this->belongsTo(Semestre::class);
     }
 
     public function turno()

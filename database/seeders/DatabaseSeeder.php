@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             TurnoSeeder::class,
             SeccionSeeder::class,
             ModuloSeeder::class,
+            PeriodoAcademicoSeeder::class,
             SuperAdminSeeder::class,
         ]);
 

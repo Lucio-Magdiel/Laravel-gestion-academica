@@ -82,6 +82,7 @@ class ModuloSeeder extends Seeder
                     'codigo' => 'S' . $semestreNumero . '-M' . str_pad($index + 1, 2, '0', STR_PAD_LEFT),
                     'descripcion' => 'Módulo del ' . $semestre->nombre,
                     'horas_semanales' => 6,
+                    'creditos' => 4, // Créditos por módulo
                     'activo' => true,
                 ]);
             }

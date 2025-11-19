@@ -47,8 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('mi-matricula/{matricula}', [MatriculaController::class, 'show'])->name('mi-matricula.show');
         Route::post('mi-matricula/{matricula}/confirmar-pago', [MatriculaController::class, 'confirmarPago'])
             ->name('mi-matricula.confirmar-pago');
-        Route::get('mi-matricula/{matricula}/constancia', [MatriculaController::class, 'descargarConstancia'])
+        Route::get('mi-matricula/{matricula}/constancia', [MatriculaController::class, 'verConstancia'])
             ->name('mi-matricula.constancia');
+        Route::get('mi-matricula/{matricula}/constancia/descargar', [MatriculaController::class, 'descargarConstancia'])
+            ->name('mi-matricula.constancia.descargar');
         Route::delete('mi-matricula/{matricula}', [MatriculaController::class, 'destroy'])
             ->name('mi-matricula.destroy');
     });
