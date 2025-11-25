@@ -80,7 +80,7 @@ export default function DocenteDashboard({ asignaciones }: DocenteDashboardProps
                                         </div>
                                         <div className="flex items-center gap-2 text-sm">
                                             <Calendar className="h-4 w-4 text-muted-foreground" />
-                                            <span>{asignacion.periodoAcademico?.nombre}</span>
+                                            <span>{asignacion.periodo_academico?.nombre}</span>
                                         </div>
                                     </CardContent>
                                 </Card>

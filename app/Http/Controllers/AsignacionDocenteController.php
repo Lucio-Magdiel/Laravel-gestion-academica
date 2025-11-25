@@ -18,7 +18,7 @@ class AsignacionDocenteController extends Controller
      */
     public function index()
     {
-        $asignaciones = AsignacionDocente::with(['docente', 'modulo', 'seccion', 'turno', 'periodo'])
+        $asignaciones = AsignacionDocente::with(['docente', 'modulo', 'seccion', 'turno', 'periodoAcademico'])
             ->latest()
             ->get();
 
@@ -81,7 +81,7 @@ class AsignacionDocenteController extends Controller
      */
     public function edit(string $id)
     {
-        $asignacion = AsignacionDocente::with(['docente', 'modulo.semestre', 'seccion', 'turno', 'periodo'])
+        $asignacion = AsignacionDocente::with(['docente', 'modulo.semestre', 'seccion', 'turno', 'periodoAcademico'])
             ->findOrFail($id);
         
         $docentes = Usuario::where('rol', 'docente')->where('activo', true)->get();

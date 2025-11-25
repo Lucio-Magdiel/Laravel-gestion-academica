@@ -113,7 +113,7 @@ export interface AsignacionDocente {
     modulo?: Modulo;
     seccion?: Seccion;
     turno?: Turno;
-    periodoAcademico?: PeriodoAcademico;
+    periodo_academico?: PeriodoAcademico;
 }
 
 export interface Matricula {
@@ -131,7 +131,7 @@ export interface Matricula {
     created_at?: string;
     updated_at?: string;
     estudiante?: User;
-    periodoAcademico?: PeriodoAcademico;
+    periodo_academico?: PeriodoAcademico;
     semestre?: Semestre;
     seccion?: Seccion;
     turno?: Turno;
@@ -143,4 +143,7 @@ export interface DetalleMatricula {
     matricula_id: number;
     asignacion_docente_id: number;
     asignacionDocente?: AsignacionDocente;
+    estado?: 'registrado' | 'cursando' | 'aprobado' | 'reprobado' | 'retirado';
+    nota_final?: number;
+    observaciones?: string;
 }

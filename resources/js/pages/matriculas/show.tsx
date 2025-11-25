@@ -22,23 +22,23 @@ interface MatriculasShowProps {
 
 const getEstadoBadge = (estado: string) => {
     const estados: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
-        registrado: { 
-            label: 'Pendiente de Pago', 
+        registrado: {
+            label: 'Pendiente de Pago',
             icon: <Clock className="h-4 w-4" />,
             color: 'bg-yellow-100 text-yellow-800'
         },
-        confirmado: { 
-            label: 'Matrícula Activa', 
+        confirmado: {
+            label: 'Matrícula Activa',
             icon: <CheckCircle className="h-4 w-4" />,
             color: 'bg-green-100 text-green-800'
         },
-        anulado: { 
-            label: 'Anulado', 
+        anulado: {
+            label: 'Anulado',
             icon: <Clock className="h-4 w-4" />,
             color: 'bg-red-100 text-red-800'
         },
     };
-    
+
     const estadoInfo = estados[estado] || { label: estado, icon: null, color: '' };
     return (
         <div className={`flex items-center gap-2 rounded-lg px-3 py-2 ${estadoInfo.color}`}>
@@ -53,7 +53,7 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
 
     // Detectar si estamos en la vista de estudiante o admin
     const isStudentView = window.location.pathname.includes('/mi-matricula');
-    
+
     // Construir breadcrumbs dinámicos
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -70,10 +70,10 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
         },
     ];
 
-    const confirmarPagoUrl = isStudentView 
+    const confirmarPagoUrl = isStudentView
         ? `/mi-matricula/${matricula.id}/confirmar-pago`
         : `/matriculas/${matricula.id}/confirmar-pago`;
-        
+
     const backUrl = isStudentView ? '/dashboard' : '/matriculas';
 
     const handleConfirmarPago = () => {
@@ -118,7 +118,7 @@ export default function MatriculasShow({ matricula, canConfirmPago }: Matriculas
                                     </div>
                                     <div>
                                         <p className="text-sm text-muted-foreground">Período Académico</p>
-                                        <p className="mt-1 font-semibold">{matricula.periodoAcademico?.nombre}</p>
+                                        <p className="mt-1 font-semibold">{matricula.periodo_academico?.nombre}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-muted-foreground">Semestre</p>

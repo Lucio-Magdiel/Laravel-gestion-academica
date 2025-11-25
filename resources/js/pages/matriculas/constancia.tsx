@@ -113,7 +113,7 @@ export default function Constancia({ matricula }: ConstanciaProps) {
                                     </div>
                                     <div className="grid grid-cols-3 gap-2">
                                         <span className="font-semibold">Período Académico:</span>
-                                        <span className="col-span-2">{matricula.periodoAcademico?.nombre || 'N/A'}</span>
+                                        <span className="col-span-2">{matricula.periodo_academico?.nombre || 'N/A'}</span>
                                     </div>
                                     <div className="grid grid-cols-3 gap-2">
                                         <span className="font-semibold">Semestre:</span>

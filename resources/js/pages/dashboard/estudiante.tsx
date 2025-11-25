@@ -68,8 +68,8 @@ export default function EstudianteDashboard({ matricula }: EstudianteDashboardPr
                                         </CardDescription>
                                     </div>
                                     <Badge className={estadoColors[matricula.estado === 'registrado' ? 'pendiente' : matricula.estado]}>
-                                        {matricula.estado === 'registrado' ? 'Pendiente de Pago' : 
-                                         matricula.estado === 'confirmado' ? 'Activa' : 'Anulado'}
+                                        {matricula.estado === 'registrado' ? 'Pendiente de Pago' :
+                                            matricula.estado === 'confirmado' ? 'Activa' : 'Anulado'}
                                     </Badge>
                                 </div>
                             </CardHeader>
@@ -96,7 +96,7 @@ export default function EstudianteDashboard({ matricula }: EstudianteDashboardPr
                                     <div className="space-y-1">
                                         <p className="text-sm font-medium">Período Académico</p>
                                         <p className="text-sm text-muted-foreground">
-                                            {matricula.periodoAcademico?.nombre || 'No disponible'}
+                                            {matricula.periodo_academico?.nombre || 'No disponible'}
                                         </p>
                                     </div>
                                     <div className="space-y-1">

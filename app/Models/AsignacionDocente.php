@@ -40,6 +40,11 @@ class AsignacionDocente extends Model
         return $this->belongsTo(PeriodoAcademico::class, 'periodo_academico_id');
     }
 
+    public function periodoAcademico()
+    {
+        return $this->belongsTo(PeriodoAcademico::class, 'periodo_academico_id');
+    }
+
     public function seccion()
     {
         return $this->belongsTo(Seccion::class);

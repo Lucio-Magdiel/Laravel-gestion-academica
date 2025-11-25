@@ -49,7 +49,7 @@ const getEstadoBadge = (estado: string) => {
         confirmado: { label: 'Activo', variant: 'default' },
         anulado: { label: 'Anulado', variant: 'destructive' },
     };
-    
+
     const estadoInfo = estados[estado] || { label: estado, variant: 'default' };
     return <Badge variant={estadoInfo.variant}>{estadoInfo.label}</Badge>;
 };
@@ -99,7 +99,7 @@ export default function MatriculasIndex({ matriculas }: MatriculasIndexProps) {
                                                 {matricula.estudiante?.nombre_completo}
                                             </TableCell>
                                             <TableCell>
-                                                {matricula.periodoAcademico?.nombre}
+                                                {matricula.periodo_academico?.nombre}
                                             </TableCell>
                                             <TableCell>
                                                 {matricula.seccion?.nombre}
@@ -137,7 +137,7 @@ export default function MatriculasIndex({ matriculas }: MatriculasIndexProps) {
                                 {matriculas.links.map((link) => (
                                     link.url && (
                                         <Link key={link.url} href={link.url}>
-                                            <Button 
+                                            <Button
                                                 variant={link.active ? "default" : "outline"}
                                                 disabled={!link.url}
                                             >
