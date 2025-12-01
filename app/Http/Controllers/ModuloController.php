@@ -115,6 +115,10 @@ class ModuloController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $modulo = Modulo::findOrFail($id);
+        $modulo->delete();
+
+        return redirect()->route('modulos.index')
+            ->with('success', 'Módulo eliminado exitosamente');
     }
 }

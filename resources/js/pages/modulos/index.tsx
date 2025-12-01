@@ -11,8 +11,17 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Modulo } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { Plus, Pencil, Trash2, BookOpen, Clock } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Pencil, Trash2, BookOpen, Clock, AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,6 +39,25 @@ interface ModulosIndexProps {
 }
 
 export default function ModulosIndex({ modulos }: ModulosIndexProps) {
+    const [moduloToDelete, setModuloToDelete] = useState<Modulo | null>(null);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    const confirmDelete = (modulo: Modulo) => {
+        setModuloToDelete(modulo);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleDelete = () => {
+        if (moduloToDelete) {
+            router.delete(`/modulos/${moduloToDelete.id}`, {
+                onSuccess: () => {
+                    setIsDeleteDialogOpen(false);
+                    setModuloToDelete(null);
+                },
+            });
+        }
+    };
+
     // Agrupar módulos por semestre
     const modulosPorSemestre = modulos.reduce((acc, modulo) => {
         const semestreNum = modulo.semestre?.numero || 0;
@@ -63,7 +91,7 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                     {Object.keys(modulosPorSemestre).sort().map((semestreNum) => {
                         const modulosSemestre = modulosPorSemestre[Number(semestreNum)];
                         const semestre = modulosSemestre[0]?.semestre;
-                        
+
                         return (
                             <Card key={semestreNum}>
                                 <CardHeader>
@@ -81,12 +109,12 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
-                                                <TableHead>Código</TableHead>
+                                                <TableHead className="w-[100px]">Código</TableHead>
                                                 <TableHead>Nombre del Módulo</TableHead>
-                                                <TableHead>Créditos</TableHead>
-                                                <TableHead>Horas/Semana</TableHead>
-                                                <TableHead>Estado</TableHead>
-                                                <TableHead className="text-right">Acciones</TableHead>
+                                                <TableHead className="w-[200px] text-center">Créditos</TableHead>
+                                                <TableHead className="w-[200px] text-center">Horas/Semana</TableHead>
+                                                <TableHead className="w-[200px] text-center">Estado</TableHead>
+                                                <TableHead className="w-[100px] text-right">Acciones</TableHead>
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
@@ -101,24 +129,24 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                                                             {modulo.nombre}
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell className="text-center">
                                                         <Badge variant="secondary">
                                                             {modulo.creditos} créditos
                                                         </Badge>
                                                     </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                                    <TableCell className="text-center">
+                                                        <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground">
                                                             <Clock className="h-3 w-3" />
                                                             {modulo.horas_semanales}h
                                                         </div>
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell className="text-center">
                                                         {modulo.activo ? (
                                                             <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
                                                                 Activo
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline">
+                                                            <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
                                                                 Inactivo
                                                             </Badge>
                                                         )}
@@ -130,7 +158,12 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                                                                     <Pencil className="h-4 w-4" />
                                                                 </Button>
                                                             </Link>
-                                                            <Button variant="outline" size="sm" className="text-red-600">
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                                                                onClick={() => confirmDelete(modulo)}
+                                                            >
                                                                 <Trash2 className="h-4 w-4" />
                                                             </Button>
                                                         </div>
@@ -144,6 +177,30 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                         );
                     })}
                 </div>
+
+                <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2 text-red-600">
+                                <AlertTriangle className="h-5 w-5" />
+                                Confirmar Eliminación
+                            </DialogTitle>
+                            <DialogDescription className="pt-2">
+                                ¿Estás seguro de que deseas eliminar el módulo <span className="font-bold text-foreground">{moduloToDelete?.nombre}</span>?
+                                <br /><br />
+                                Esta acción eliminará permanentemente el módulo. Esta acción no se puede deshacer.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2 sm:gap-0">
+                            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                                Cancelar
+                            </Button>
+                            <Button variant="destructive" onClick={handleDelete}>
+                                Eliminar Módulo
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </AppLayout>
     );

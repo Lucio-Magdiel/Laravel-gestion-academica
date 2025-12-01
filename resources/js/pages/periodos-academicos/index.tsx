@@ -11,8 +11,17 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type PeriodoAcademico } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Pencil, Trash2, AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,12 +39,31 @@ interface PeriodosIndexProps {
 }
 
 const estadoColors = {
+    borrador: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
     activo: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    inactivo: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
-    cerrado: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+    finalizado: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
 };
 
 export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
+    const [periodoToDelete, setPeriodoToDelete] = useState<PeriodoAcademico | null>(null);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    const confirmDelete = (periodo: PeriodoAcademico) => {
+        setPeriodoToDelete(periodo);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleDelete = () => {
+        if (periodoToDelete) {
+            router.delete(`/periodos-academicos/${periodoToDelete.id}`, {
+                onSuccess: () => {
+                    setIsDeleteDialogOpen(false);
+                    setPeriodoToDelete(null);
+                },
+            });
+        }
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestión de Períodos Académicos" />
@@ -106,8 +134,8 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                                                 {new Date(periodo.fecha_fin).toLocaleDateString('es-PE')}
                                             </TableCell>
                                             <TableCell>
-                                                <Badge className={estadoColors[periodo.estado as keyof typeof estadoColors] || estadoColors.inactivo}>
-                                                    {periodo.activo ? 'Activo' : 'Inactivo'}
+                                                <Badge className={estadoColors[periodo.estado as keyof typeof estadoColors] || estadoColors.borrador}>
+                                                    {periodo.estado.charAt(0).toUpperCase() + periodo.estado.slice(1)}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
@@ -117,7 +145,12 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                                                             <Pencil className="h-4 w-4" />
                                                         </Button>
                                                     </Link>
-                                                    <Button variant="outline" size="sm" className="text-red-600">
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                                                        onClick={() => confirmDelete(periodo)}
+                                                    >
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 </div>
@@ -129,6 +162,32 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                         </Table>
                     </CardContent>
                 </Card>
+
+                <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2 text-red-600">
+                                <AlertTriangle className="h-5 w-5" />
+                                Confirmar Eliminación
+                            </DialogTitle>
+                            <DialogDescription className="pt-2">
+                                ¿Estás seguro de que deseas eliminar este período académico?
+                                <br />
+                                Período: <span className="font-bold text-foreground">{periodoToDelete?.nombre}</span>
+                                <br /><br />
+                                Esta acción no se puede deshacer.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2 sm:gap-0">
+                            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                                Cancelar
+                            </Button>
+                            <Button variant="destructive" onClick={handleDelete}>
+                                Eliminar Período
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </AppLayout>
     );

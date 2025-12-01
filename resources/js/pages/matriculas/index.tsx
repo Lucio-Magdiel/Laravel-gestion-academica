@@ -44,14 +44,27 @@ interface MatriculasIndexProps {
 }
 
 const getEstadoBadge = (estado: string) => {
-    const estados: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-        registrado: { label: 'Pendiente de Pago', variant: 'outline' },
-        confirmado: { label: 'Activo', variant: 'default' },
-        anulado: { label: 'Anulado', variant: 'destructive' },
+    const estados: Record<string, { label: string; className: string }> = {
+        registrado: {
+            label: 'Pendiente de Pago',
+            className: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900/80 border-transparent'
+        },
+        confirmado: {
+            label: 'Activo',
+            className: 'bg-green-100 text-green-800 hover:bg-green-100/80 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-900/80 border-transparent'
+        },
+        anulado: {
+            label: 'Anulado',
+            className: 'bg-red-100 text-red-800 hover:bg-red-100/80 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-900/80 border-transparent'
+        },
     };
 
-    const estadoInfo = estados[estado] || { label: estado, variant: 'default' };
-    return <Badge variant={estadoInfo.variant}>{estadoInfo.label}</Badge>;
+    const estadoInfo = estados[estado] || {
+        label: estado,
+        className: 'bg-gray-100 text-gray-800 hover:bg-gray-100/80 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-900/80 border-transparent'
+    };
+
+    return <Badge className={estadoInfo.className} variant="outline">{estadoInfo.label}</Badge>;
 };
 
 export default function MatriculasIndex({ matriculas }: MatriculasIndexProps) {

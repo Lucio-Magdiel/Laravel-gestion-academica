@@ -103,6 +103,10 @@ class PeriodoAcademicoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $periodo = PeriodoAcademico::findOrFail($id);
+        $periodo->delete();
+
+        return redirect()->route('periodos-academicos.index')
+            ->with('success', 'Período académico eliminado exitosamente');
     }
 }

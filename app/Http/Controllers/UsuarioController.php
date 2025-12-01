@@ -59,6 +59,14 @@ class UsuarioController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         $validated['activo'] = $validated['activo'] ?? true;
 
+        // Generar nombre completo
+        $partes = array_filter([
+            $validated['nombre'],
+            $validated['apellido_paterno'] ?? '',
+            $validated['apellido_materno'] ?? '',
+        ]);
+        $validated['nombre_completo'] = implode(' ', $partes);
+
         Usuario::create($validated);
 
         return redirect()->route('usuarios.index')
@@ -99,6 +107,14 @@ class UsuarioController extends Controller
         } else {
             unset($validated['password']);
         }
+
+        // Generar nombre completo
+        $partes = array_filter([
+            $validated['nombre'],
+            $validated['apellido_paterno'] ?? '',
+            $validated['apellido_materno'] ?? '',
+        ]);
+        $validated['nombre_completo'] = implode(' ', $partes);
 
         $usuario->update($validated);
 

@@ -18,7 +18,7 @@ class AsignacionDocenteController extends Controller
      */
     public function index()
     {
-        $asignaciones = AsignacionDocente::with(['docente', 'modulo', 'seccion', 'turno', 'periodoAcademico'])
+        $asignaciones = AsignacionDocente::with(['docente', 'modulo.semestre', 'seccion', 'turno', 'periodoAcademico'])
             ->latest()
             ->get();
 
@@ -128,6 +128,10 @@ class AsignacionDocenteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $asignacion = AsignacionDocente::findOrFail($id);
+        $asignacion->delete();
+
+        return redirect()->route('asignaciones.index')
+            ->with('success', 'Asignación eliminada exitosamente');
     }
 }

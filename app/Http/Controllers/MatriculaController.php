@@ -83,7 +83,7 @@ class MatriculaController extends Controller
         DB::beginTransaction();
         try {
             // Generar código de matrícula
-            $codigo = 'MAT-' . date('Y') . '-' . str_pad($estudiante->id, 6, '0', STR_PAD_LEFT);
+            $codigo = 'IESTP-' . date('Y') . '-' . str_pad($estudiante->id, 6, '0', STR_PAD_LEFT);
 
             // Crear matrícula
             $matricula = Matricula::create([

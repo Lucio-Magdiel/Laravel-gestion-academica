@@ -44,11 +44,12 @@ class CreateNewUser implements CreatesNewUsers
             'nombre' => $input['nombre'],
             'apellido_paterno' => $input['apellido_paterno'] ?? null,
             'apellido_materno' => $input['apellido_materno'] ?? null,
+            'nombre_completo' => trim($input['nombre'] . ' ' . ($input['apellido_paterno'] ?? '') . ' ' . ($input['apellido_materno'] ?? '')),
             'dni' => $input['dni'],
             'email' => $input['email'],
             'telefono' => $input['telefono'] ?? null,
             'direccion' => $input['direccion'] ?? null,
-            'rol' => $input['rol'] ?? 'estudiante',
+            'rol' => 'estudiante',
             'password' => $input['password'],
         ]);
     }

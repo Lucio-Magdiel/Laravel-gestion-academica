@@ -26,8 +26,8 @@ export default function EditPeriodoAcademico({ periodo }: Props) {
   const { data, setData, patch, processing, errors } = useForm({
     anio: periodo.anio.toString(),
     semestre: periodo.semestre.toString(),
-    fecha_inicio: periodo.fecha_inicio,
-    fecha_fin: periodo.fecha_fin,
+    fecha_inicio: periodo.fecha_inicio.split('T')[0],
+    fecha_fin: periodo.fecha_fin.split('T')[0],
     estado: periodo.estado,
   });
 
