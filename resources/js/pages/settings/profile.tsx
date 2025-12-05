@@ -60,7 +60,7 @@ export default function Profile({
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder="Full name"
+                                        placeholder="Nombre completo"
                                     />
 
                                     <InputError
@@ -80,7 +80,7 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder="Email address"
+                                        placeholder="Correo electrónico"
                                     />
 
                                     <InputError
@@ -107,12 +107,12 @@ export default function Profile({
 
                                             {status ===
                                                 'verification-link-sent' && (
-                                                <div className="mt-2 text-sm font-medium text-green-600">
-                                                    A new verification link has
-                                                    been sent to your email
-                                                    address.
-                                                </div>
-                                            )}
+                                                    <div className="mt-2 text-sm font-medium text-green-600">
+                                                        A new verification link has
+                                                        been sent to your email
+                                                        address.
+                                                    </div>
+                                                )}
                                         </div>
                                     )}
 

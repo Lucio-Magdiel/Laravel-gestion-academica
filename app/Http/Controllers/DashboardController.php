@@ -30,6 +30,9 @@ class DashboardController extends Controller
 
     private function adminDashboard()
     {
+        /** @var \App\Models\Usuario $user */
+        $user = auth()->user();
+
         $stats = [
             'total_estudiantes' => Usuario::where('rol', 'estudiante')->count(),
             'total_docentes' => Usuario::where('rol', 'docente')->count(),
@@ -38,8 +41,28 @@ class DashboardController extends Controller
             'modulos_sin_docente' => Modulo::whereDoesntHave('asignaciones')->count(),
         ];
 
+        $recentActivity = [];
+        
+        // Solo mostrar bitácora al super admin
+        if ($user->rol === 'super_admin') {
+            $recentActivity = \App\Models\BitacoraAccion::with('usuario')
+                ->latest()
+                ->take(5)
+                ->get()
+                ->map(function ($log) {
+                    return [
+                        'id' => $log->id,
+                        'usuario' => $log->usuario ? $log->usuario->nombre_completo : 'Sistema',
+                        'accion' => $log->accion,
+                        'descripcion' => $log->descripcion,
+                        'created_at' => $log->created_at->diffForHumans(),
+                    ];
+                });
+        }
+
         return Inertia::render('dashboard/admin', [
             'stats' => $stats,
+            'recentActivity' => $recentActivity,
         ]);
     }
 
@@ -49,7 +72,7 @@ class DashboardController extends Controller
         $docente = auth()->user();
         
         $asignaciones = AsignacionDocente::where('docente_id', $docente->id)
-            ->with(['modulo', 'seccion', 'turno', 'periodo'])
+            ->with(['modulo.semestre', 'seccion', 'turno', 'periodo'])
             ->get();
 
         return Inertia::render('dashboard/docente', [

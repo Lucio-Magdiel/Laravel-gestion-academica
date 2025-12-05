@@ -1,4 +1,4 @@
-import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
@@ -11,7 +11,7 @@ import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/user-password';
+import { edit, update } from '@/routes/user-password';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -36,7 +36,8 @@ export default function Password() {
                     />
 
                     <Form
-                        {...PasswordController.update.form()}
+                        action={update.url()}
+                        method="put"
                         options={{
                             preserveScroll: true,
                         }}
@@ -71,7 +72,7 @@ export default function Password() {
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="current-password"
-                                        placeholder="Current password"
+                                        placeholder="Contraseña actual"
                                     />
 
                                     <InputError
@@ -91,7 +92,7 @@ export default function Password() {
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
-                                        placeholder="New password"
+                                        placeholder="Nueva contraseña"
                                     />
 
                                     <InputError message={errors.password} />
@@ -108,7 +109,7 @@ export default function Password() {
                                         type="password"
                                         className="mt-1 block w-full"
                                         autoComplete="new-password"
-                                        placeholder="Confirm password"
+                                        placeholder="Confirmar contraseña"
                                     />
 
                                     <InputError

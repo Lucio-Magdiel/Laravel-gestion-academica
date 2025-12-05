@@ -76,9 +76,10 @@ export default function Constancia({ matricula }: ConstanciaProps) {
                 <div className="mx-auto w-full max-w-4xl">
                     <Card className="border-2">
                         <CardHeader className="border-b-2 border-primary bg-gradient-to-r from-primary/5 to-primary/10">
-                            <div className="text-center">
+                            <div className="text-center flex flex-col items-center gap-2">
+                                <img src="/images/logo.png" alt="Logo" className="h-20 object-contain" />
                                 <CardTitle className="text-2xl text-primary">
-                                    Laravel Starter Kit
+                                    Gestion Academica
                                 </CardTitle>
                                 <CardDescription className="text-base">
                                     Instituto de Educación Superior Tecnológico Público
@@ -93,7 +94,7 @@ export default function Constancia({ matricula }: ConstanciaProps) {
 
                             {/* Descripción */}
                             <p className="text-muted-foreground">
-                                La Dirección del <strong>Laravel Starter Kit</strong>, certifica que:
+                                La Dirección del <strong>Gestion Academica</strong>, certifica que:
                             </p>
 
                             {/* Datos del Estudiante */}

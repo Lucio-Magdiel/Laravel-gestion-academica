@@ -46,7 +46,7 @@ export default function CreateModulo({ semestres }: Props) {
     <AppLayout>
       <Head title="Crear Módulo" />
 
-      <div className="space-y-6">
+      <div className="flex h-full flex-1 flex-col gap-6 p-6">
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
@@ -143,7 +143,7 @@ export default function CreateModulo({ semestres }: Props) {
                     min="1"
                     max="10"
                     value={data.creditos}
-                    onChange={(e) => setData('creditos', e.target.value ? parseInt(e.target.value, 10) : 0)}
+                    onChange={(e) => setData('creditos', e.target.value === '' ? '' : parseInt(e.target.value, 10))}
                     placeholder="Ej: 4"
                   />
                   {errors.creditos && (
@@ -162,7 +162,7 @@ export default function CreateModulo({ semestres }: Props) {
                     min="1"
                     max="20"
                     value={data.horas_semanales}
-                    onChange={(e) => setData('horas_semanales', e.target.value ? parseInt(e.target.value, 10) : 0)}
+                    onChange={(e) => setData('horas_semanales', e.target.value === '' ? '' : parseInt(e.target.value, 10))}
                     placeholder="Ej: 6"
                   />
                   {errors.horas_semanales && (

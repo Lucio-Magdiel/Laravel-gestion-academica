@@ -87,7 +87,7 @@ export default function UsuariosEdit({ usuario }: UsuariosEditProps) {
                                         id="nombre"
                                         value={data.nombre}
                                         onChange={(e) => setData('nombre', e.target.value)}
-                                        placeholder="Ej: Juan"
+                                        placeholder="Ej: Cirilo"
                                         required
                                     />
                                     {errors.nombre && (
@@ -101,7 +101,7 @@ export default function UsuariosEdit({ usuario }: UsuariosEditProps) {
                                         id="apellido_paterno"
                                         value={data.apellido_paterno}
                                         onChange={(e) => setData('apellido_paterno', e.target.value)}
-                                        placeholder="Ej: Pérez"
+                                        placeholder="Ej: Pampañaypa"
                                     />
                                     {errors.apellido_paterno && (
                                         <p className="text-sm text-red-600">{errors.apellido_paterno}</p>
@@ -114,7 +114,7 @@ export default function UsuariosEdit({ usuario }: UsuariosEditProps) {
                                         id="apellido_materno"
                                         value={data.apellido_materno}
                                         onChange={(e) => setData('apellido_materno', e.target.value)}
-                                        placeholder="Ej: García"
+                                        placeholder="Ej: Atacuri"
                                     />
                                     {errors.apellido_materno && (
                                         <p className="text-sm text-red-600">{errors.apellido_materno}</p>
@@ -170,7 +170,7 @@ export default function UsuariosEdit({ usuario }: UsuariosEditProps) {
                                         id="direccion"
                                         value={data.direccion}
                                         onChange={(e) => setData('direccion', e.target.value)}
-                                        placeholder="Av. Principal 123, Distrito, Ciudad"
+                                        placeholder="Av. La Cultura 777, Cusco"
                                     />
                                     {errors.direccion && (
                                         <p className="text-sm text-red-600">{errors.direccion}</p>

@@ -277,7 +277,7 @@ export default function EditAsignacion({
                     <SelectContent>
                       {periodos.map((periodo) => (
                         <SelectItem key={periodo.id} value={periodo.id.toString()}>
-                          {periodo.anio} - Semestre {periodo.semestre}
+                          {periodo.anio} - Periodo {periodo.semestre}
                         </SelectItem>
                       ))}
                     </SelectContent>

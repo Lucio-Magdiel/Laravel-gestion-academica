@@ -51,10 +51,13 @@ export default function Register() {
     const nombreCompleto = `${formData.nombre} ${formData.apellido_paterno} ${formData.apellido_materno}`.trim();
     const passwordsMatch = formData.password && formData.password === formData.password_confirmation;
     const fieldsCompleted = {
-        nombre: !!formData.nombre,
-        apellidos: !!(formData.apellido_paterno || formData.apellido_materno),
-        email: !!formData.email,
-        dni: !!formData.dni,
+        nombre: !!formData.nombre && /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/.test(formData.nombre) && formData.nombre.length > 2,
+        apellido_paterno: !!formData.apellido_paterno && /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/.test(formData.apellido_paterno) && formData.apellido_paterno.length > 2,
+        apellido_materno: !!formData.apellido_materno && /^[a-zA-ZáéíóúñÁÉÍÓÚÑ\s]+$/.test(formData.apellido_materno) && formData.apellido_materno.length > 2,
+        email: !!formData.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
+        dni: !!formData.dni && /^\d{8}$/.test(formData.dni),
+        telefono: !!formData.telefono && /^\+?[\d\s-]{9,}$/.test(formData.telefono),
+        direccion: !!formData.direccion && formData.direccion.length > 5,
         password: !!formData.password && formData.password.length >= 8,
         confirmPassword: passwordsMatch,
     };
@@ -82,11 +85,11 @@ export default function Register() {
                                 <div className="flex items-center gap-2">
                                     <div className="text-sm font-semibold text-muted-foreground">1</div>
                                     <h3 className="text-sm font-semibold">Personal Information</h3>
-                                    {fieldsCompleted.nombre && fieldsCompleted.apellidos && (
+                                    {fieldsCompleted.nombre && fieldsCompleted.apellido_paterno && fieldsCompleted.apellido_materno && fieldsCompleted.dni && (
                                         <Check className="h-4 w-4 text-green-500 ml-auto" />
                                     )}
                                 </div>
-                                
+
                                 <div className="grid gap-3">
                                     <div className="grid gap-2">
                                         <Label htmlFor="nombre">First Name *</Label>
@@ -99,8 +102,9 @@ export default function Register() {
                                             name="nombre"
                                             value={formData.nombre}
                                             onChange={handleChange}
-                                            placeholder="John"
-                                            className={fieldsCompleted.nombre ? 'border-green-500' : ''}
+                                            placeholder="Cirilo"
+
+                                            className={fieldsCompleted.nombre ? 'border-green-500' : (formData.nombre.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.nombre} className="mt-1" />
                                     </div>
@@ -114,7 +118,9 @@ export default function Register() {
                                             name="apellido_paterno"
                                             value={formData.apellido_paterno}
                                             onChange={handleChange}
-                                            placeholder="Smith"
+                                            placeholder="Pampañaypa"
+
+                                            className={fieldsCompleted.apellido_paterno ? 'border-green-500' : (formData.apellido_paterno.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.apellido_paterno} className="mt-1" />
                                     </div>
@@ -128,7 +134,9 @@ export default function Register() {
                                             name="apellido_materno"
                                             value={formData.apellido_materno}
                                             onChange={handleChange}
-                                            placeholder="Johnson"
+                                            placeholder="Atacuri"
+
+                                            className={fieldsCompleted.apellido_materno ? 'border-green-500' : (formData.apellido_materno.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.apellido_materno} className="mt-1" />
                                     </div>
@@ -145,7 +153,8 @@ export default function Register() {
                                             onChange={handleChange}
                                             placeholder="12345678"
                                             maxLength={15}
-                                            className={fieldsCompleted.dni ? 'border-green-500' : ''}
+
+                                            className={fieldsCompleted.dni ? 'border-green-500' : (formData.dni.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.dni} className="mt-1" />
                                     </div>
@@ -157,7 +166,7 @@ export default function Register() {
                                 <div className="flex items-center gap-2">
                                     <div className="text-sm font-semibold text-muted-foreground">2</div>
                                     <h3 className="text-sm font-semibold">Contact Information</h3>
-                                    {fieldsCompleted.email && (
+                                    {fieldsCompleted.email && fieldsCompleted.telefono && fieldsCompleted.direccion && (
                                         <Check className="h-4 w-4 text-green-500 ml-auto" />
                                     )}
                                 </div>
@@ -175,7 +184,8 @@ export default function Register() {
                                             value={formData.email}
                                             onChange={handleChange}
                                             placeholder="email@example.com"
-                                            className={fieldsCompleted.email ? 'border-green-500' : ''}
+
+                                            className={fieldsCompleted.email ? 'border-green-500' : (formData.email.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.email} className="mt-1" />
                                     </div>
@@ -189,7 +199,9 @@ export default function Register() {
                                             name="telefono"
                                             value={formData.telefono}
                                             onChange={handleChange}
-                                            placeholder="+1 (555) 000-0000"
+                                            placeholder="+51 983..."
+
+                                            className={fieldsCompleted.telefono ? 'border-green-500' : (formData.telefono.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.telefono} className="mt-1" />
                                     </div>
@@ -203,7 +215,9 @@ export default function Register() {
                                             name="direccion"
                                             value={formData.direccion}
                                             onChange={handleChange}
-                                            placeholder="123 Main St, City, Country"
+                                            placeholder="Av. Principal 123, Distrito, Ciudad"
+
+                                            className={fieldsCompleted.direccion ? 'border-green-500' : (formData.direccion.length > 0 ? 'border-red-500' : '')}
                                         />
                                         <InputError message={errors.direccion} className="mt-1" />
                                     </div>
@@ -278,7 +292,7 @@ export default function Register() {
                                     >
                                         {showPreview ? '▼ Hide' : '▶ Show'} Preview
                                     </button>
-                                    
+
                                     {showPreview && (
                                         <Card className="mt-3 bg-muted/50">
                                             <CardHeader className="pb-3">

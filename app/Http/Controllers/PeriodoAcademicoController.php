@@ -44,8 +44,8 @@ class PeriodoAcademicoController extends Controller
         ]);
 
         // Generar nombre automáticamente
-        $semestreNombre = $validated['semestre'] == 1 ? 'Primer' : 'Segundo';
-        $validated['nombre'] = "{$semestreNombre} Semestre {$validated['anio']}";
+        $semestreNombre = $validated['semestre'] == 1 ? '1' : '2';
+        $validated['nombre'] = "Periodo {$semestreNombre} {$validated['anio']}";
 
         PeriodoAcademico::create($validated);
 
@@ -89,8 +89,8 @@ class PeriodoAcademicoController extends Controller
         ]);
 
         // Generar nombre automáticamente
-        $semestreNombre = $validated['semestre'] == 1 ? 'Primer' : 'Segundo';
-        $validated['nombre'] = "{$semestreNombre} Semestre {$validated['anio']}";
+        $semestreNombre = $validated['semestre'] == 1 ? '1' : '2';
+        $validated['nombre'] = "Periodo {$semestreNombre} {$validated['anio']}";
 
         $periodo->update($validated);
 

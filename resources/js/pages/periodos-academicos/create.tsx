@@ -27,7 +27,7 @@ export default function CreatePeriodoAcademico() {
     <AppLayout>
       <Head title="Crear Período Académico" />
 
-      <div className="space-y-6">
+      <div className="flex h-full flex-1 flex-col gap-6 p-6">
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
@@ -76,18 +76,18 @@ export default function CreatePeriodoAcademico() {
                 {/* Semestre */}
                 <div className="space-y-2">
                   <Label htmlFor="semestre">
-                    Semestre <span className="text-destructive">*</span>
+                    Periodo <span className="text-destructive">*</span>
                   </Label>
                   <Select
                     value={data.semestre}
                     onValueChange={(value) => setData('semestre', value)}
                   >
                     <SelectTrigger id="semestre">
-                      <SelectValue placeholder="Selecciona el semestre" />
+                      <SelectValue placeholder="Selecciona el periodo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1">Semestre 1</SelectItem>
-                      <SelectItem value="2">Semestre 2</SelectItem>
+                      <SelectItem value="1">Periodo 1</SelectItem>
+                      <SelectItem value="2">Periodo 2</SelectItem>
                     </SelectContent>
                   </Select>
                   {errors.semestre && (

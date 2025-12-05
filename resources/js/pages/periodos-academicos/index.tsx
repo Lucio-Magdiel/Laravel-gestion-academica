@@ -95,7 +95,7 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Período</TableHead>
-                                    <TableHead>Año/Semestre</TableHead>
+                                    <TableHead>Año/Periodo</TableHead>
                                     <TableHead>Fecha Inicio</TableHead>
                                     <TableHead>Fecha Fin</TableHead>
                                     <TableHead>Estado</TableHead>
@@ -124,7 +124,7 @@ export default function PeriodosIndex({ periodos }: PeriodosIndexProps) {
                                             </TableCell>
                                             <TableCell>
                                                 <Badge variant="outline">
-                                                    {periodo.anio} - Semestre {periodo.semestre}
+                                                    {periodo.anio} - Periodo {periodo.semestre}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>

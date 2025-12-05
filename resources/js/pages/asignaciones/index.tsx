@@ -165,7 +165,12 @@ export default function AsignacionesIndex({ asignaciones }: AsignacionesIndexPro
                                                                                 {asignacion.turno?.hora_inicio} - {asignacion.turno?.hora_fin}
                                                                             </p>
                                                                         </TableCell>
-                                                                        <TableCell>{asignacion.periodo_academico?.nombre}</TableCell>
+                                                                        <TableCell>
+                                                                            Periodo {asignacion.periodo_academico?.semestre}
+                                                                            <p className="text-sm text-muted-foreground">
+                                                                                {asignacion.periodo_academico?.anio}
+                                                                            </p>
+                                                                        </TableCell>
                                                                         <TableCell className="text-right">
                                                                             <div className="flex justify-end gap-2">
                                                                                 <Link href={`/asignaciones/${asignacion.id}/edit`}>

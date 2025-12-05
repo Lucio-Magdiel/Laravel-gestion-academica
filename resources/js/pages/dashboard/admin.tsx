@@ -12,6 +12,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface ActivityLog {
+    id: number;
+    usuario: string;
+    accion: string;
+    descripcion: string;
+    created_at: string;
+}
+
 interface AdminDashboardProps {
     stats: {
         total_estudiantes: number;
@@ -20,9 +28,10 @@ interface AdminDashboardProps {
         matriculas_activas: number;
         modulos_sin_docente: number;
     };
+    recentActivity: ActivityLog[];
 }
 
-export default function AdminDashboard({ stats }: AdminDashboardProps) {
+export default function AdminDashboard({ stats, recentActivity }: AdminDashboardProps) {
     const statCards = [
         {
             title: 'Estudiantes',
@@ -132,9 +141,34 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-muted-foreground">
-                                Función de bitácora próximamente disponible
-                            </p>
+                            {recentActivity.length > 0 ? (
+                                <div className="space-y-4">
+                                    {recentActivity.map((log) => (
+                                        <div key={log.id} className="flex items-start gap-4 border-b pb-4 last:border-0 last:pb-0">
+                                            <div className="rounded-full bg-primary/10 p-2 text-primary">
+                                                <AlertCircle className="h-4 w-4" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium leading-none">
+                                                    {log.accion}
+                                                </p>
+                                                <p className="text-sm text-muted-foreground">
+                                                    {log.descripcion}
+                                                </p>
+                                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                    <span className="font-medium text-foreground">{log.usuario}</span>
+                                                    <span>•</span>
+                                                    <span>{log.created_at}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-muted-foreground">
+                                    No hay actividad reciente registrada.
+                                </p>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

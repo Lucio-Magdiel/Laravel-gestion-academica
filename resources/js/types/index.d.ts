@@ -114,6 +114,7 @@ export interface AsignacionDocente {
     seccion?: Seccion;
     turno?: Turno;
     periodo_academico?: PeriodoAcademico;
+    periodo?: PeriodoAcademico;
 }
 
 export interface Matricula {

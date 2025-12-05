@@ -108,7 +108,7 @@ export default function AsignacionesCreate({ docentes, modulos, secciones, turno
                                         <SelectContent>
                                             {periodos.map((periodo) => (
                                                 <SelectItem key={periodo.id} value={periodo.id.toString()}>
-                                                    {periodo.nombre} - {periodo.anio}
+                                                    {periodo.anio} - Periodo {periodo.semestre}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -172,12 +172,12 @@ export default function AsignacionesCreate({ docentes, modulos, secciones, turno
                                         disabled={!data.semestre_id}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue 
+                                            <SelectValue
                                                 placeholder={
-                                                    data.semestre_id 
-                                                        ? "Seleccione un módulo" 
+                                                    data.semestre_id
+                                                        ? "Seleccione un módulo"
                                                         : "Primero seleccione un semestre"
-                                                } 
+                                                }
                                             />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -211,7 +211,7 @@ export default function AsignacionesCreate({ docentes, modulos, secciones, turno
                                         <SelectContent>
                                             {secciones.map((seccion) => (
                                                 <SelectItem key={seccion.id} value={seccion.id.toString()}>
-                                                    Sección {seccion.nombre} - Cap: {seccion.capacidad_maxima}
+                                                    Sección {seccion.nombre} {seccion.capacidad_maxima}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>

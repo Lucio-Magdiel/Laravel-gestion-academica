@@ -67,7 +67,16 @@ class UsuarioController extends Controller
         ]);
         $validated['nombre_completo'] = implode(' ', $partes);
 
-        Usuario::create($validated);
+        $usuario = Usuario::create($validated);
+
+        \App\Services\BitacoraLogger::log(
+            'Creación de Usuario',
+            'Usuario creado por administrador: ' . $usuario->nombre_completo . ' (' . $usuario->rol . ')',
+            'Usuario',
+            $usuario->id,
+            null,
+            $usuario->toArray()
+        );
 
         return redirect()->route('usuarios.index')
             ->with('success', 'Usuario creado exitosamente');

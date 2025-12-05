@@ -156,7 +156,8 @@
 <body>
     <div class="constancia">
         <div class="header">
-            <h1>{{ config('app.name') }}</h1>
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 80px; margin-bottom: 10px;">
+            <h1>Gestion Academica</h1>
             <h2>Instituto de Educación Superior Tecnológico Público "DIVINO JESÚS"</h2>
         </div>
         
@@ -164,7 +165,7 @@
         
         <div class="contenido">
             <p style="margin-bottom: 20px;">
-                La Dirección del <strong>{{ config('app.name') }}</strong>, certifica que:
+                La Dirección del <strong>Gestion Academica</strong>, certifica que:
             </p>
         </div>
         
@@ -271,7 +272,7 @@
             <div style="margin-top: 40px;">
                 <div class="firma-linea"></div>
                 <div class="firma-texto">Dirección Académica</div>
-                <div class="firma-texto" style="font-weight: bold;">{{ config('app.name') }}</div>
+                <div class="firma-texto" style="font-weight: bold;">Gestion Academica</div>
             </div>
         </div>
     </div>

@@ -125,6 +125,15 @@ class MatriculaController extends Controller
 
             DB::commit();
 
+            \App\Services\BitacoraLogger::log(
+                'Inicio de Matrícula',
+                'Estudiante inició proceso de matrícula: ' . $codigo,
+                'Matricula',
+                $matricula->id,
+                null,
+                $matricula->toArray()
+            );
+
             return redirect()->route('mi-matricula.show', $matricula)
                 ->with('success', 'Matrícula registrada exitosamente. Proceda con el pago para confirmarla.');
 

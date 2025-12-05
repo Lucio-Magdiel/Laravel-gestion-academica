@@ -106,72 +106,74 @@ export default function ModulosIndex({ modulos }: ModulosIndexProps) {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="w-[100px]">Código</TableHead>
-                                                <TableHead>Nombre del Módulo</TableHead>
-                                                <TableHead className="w-[200px] text-center">Créditos</TableHead>
-                                                <TableHead className="w-[200px] text-center">Horas/Semana</TableHead>
-                                                <TableHead className="w-[200px] text-center">Estado</TableHead>
-                                                <TableHead className="w-[100px] text-right">Acciones</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {modulosSemestre.map((modulo) => (
-                                                <TableRow key={modulo.id}>
-                                                    <TableCell className="font-mono font-medium">
-                                                        {modulo.codigo}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex items-center gap-2">
-                                                            <BookOpen className="h-4 w-4 text-muted-foreground" />
-                                                            {modulo.nombre}
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        <Badge variant="secondary">
-                                                            {modulo.creditos} créditos
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground">
-                                                            <Clock className="h-3 w-3" />
-                                                            {modulo.horas_semanales}h
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="text-center">
-                                                        {modulo.activo ? (
-                                                            <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                                                Activo
-                                                            </Badge>
-                                                        ) : (
-                                                            <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-                                                                Inactivo
-                                                            </Badge>
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <div className="flex justify-end gap-2">
-                                                            <Link href={`/modulos/${modulo.id}/edit`}>
-                                                                <Button variant="outline" size="sm">
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Button>
-                                                            </Link>
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                className="text-red-600 hover:bg-red-50 hover:text-red-700"
-                                                                onClick={() => confirmDelete(modulo)}
-                                                            >
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
-                                                        </div>
-                                                    </TableCell>
+                                    <div className="overflow-x-auto">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead className="w-[100px]">Código</TableHead>
+                                                    <TableHead>Nombre del Módulo</TableHead>
+                                                    <TableHead className="w-[200px] text-center">Créditos</TableHead>
+                                                    <TableHead className="w-[200px] text-center">Horas/Semana</TableHead>
+                                                    <TableHead className="w-[200px] text-center">Estado</TableHead>
+                                                    <TableHead className="w-[100px] text-right">Acciones</TableHead>
                                                 </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {modulosSemestre.map((modulo) => (
+                                                    <TableRow key={modulo.id}>
+                                                        <TableCell className="font-mono font-medium">
+                                                            {modulo.codigo}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-2">
+                                                                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                                                                {modulo.nombre}
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            <Badge variant="secondary">
+                                                                {modulo.creditos} créditos
+                                                            </Badge>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground">
+                                                                <Clock className="h-3 w-3" />
+                                                                {modulo.horas_semanales}h
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="text-center">
+                                                            {modulo.activo ? (
+                                                                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                                                    Activo
+                                                                </Badge>
+                                                            ) : (
+                                                                <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                                                                    Inactivo
+                                                                </Badge>
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            <div className="flex justify-end gap-2">
+                                                                <Link href={`/modulos/${modulo.id}/edit`}>
+                                                                    <Button variant="outline" size="sm">
+                                                                        <Pencil className="h-4 w-4" />
+                                                                    </Button>
+                                                                </Link>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    size="sm"
+                                                                    className="text-red-600 hover:bg-red-50 hover:text-red-700"
+                                                                    onClick={() => confirmDelete(modulo)}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
                                 </CardContent>
                             </Card>
                         );
